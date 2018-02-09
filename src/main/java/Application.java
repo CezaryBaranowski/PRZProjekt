@@ -1,7 +1,9 @@
-import java.awt.Container;
-import java.awt.EventQueue;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class Application extends JFrame {
@@ -13,23 +15,67 @@ public class Application extends JFrame {
 
     private void initUI() {
 
-        this.setSize(100,100);
-
-        JButton quitButton = new JButton("Quit");
+      /*  JButton quitButton = new JButton("Quit");
         quitButton.setToolTipText("A button component");
         //quitButton.setMnemonic(KeyEvent.VK_B);
 
         quitButton.addActionListener((ActionEvent event) -> {
             System.exit(0);
-        });
+        });*/
+
         createMenuBar();
+        createTabs();
 
-        createLayout(quitButton);
-
-        setTitle("Quit button");
-        setSize(300, 200);
+       // createLayout(quitButton);
+        setVisible(true);
+        pack();
+        setTitle("Aplikancja");
+        setSize(1280, 800);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    private void createTabs()
+    {
+        JTabbedPane tabbedpane = new JTabbedPane();
+        JComponent pane1 = makeTextPanel("Panel1",1);
+        tabbedpane.addTab("Przeglad",pane1);
+
+        JComponent pane2 = makeTextPanel("Panel2",2);
+        tabbedpane.addTab("Samoloty",pane2);
+
+        JComponent pane3 = makeTextPanel("Panel3",3);
+        tabbedpane.addTab("Zlecenia",pane3);
+
+        add(tabbedpane);
+    }
+
+    private JComponent makeTextPanel(String text, int tab) {
+        JPanel panel = new JPanel(true);
+        String path = new String();
+        JLabel filler = new JLabel();
+        switch(tab)
+        {
+            case 1: path = "src/main/resources/background1.jpg"; break;
+            case 2: path = "src/main/resources/background2.jpg"; break;
+            case 3: path = "src/main/resources/background3.jpg"; break;
+        }
+        try{
+            ImageIcon img = new ImageIcon(ImageIO.read(new File(path)));
+        //filler = new JLabel(new ImageIcon(ImageIO.read(new File(path))));
+            filler = new JLabel();
+            filler.setIcon(img);
+            filler.setLayout(new GridBagLayout());
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+            System.out.println("Nie udalo sie wczytac tla");
+        }
+        filler.setHorizontalAlignment(JLabel.CENTER);
+        panel.setLayout(new GridLayout(1,1));
+        panel.add(filler);
+        return panel;
     }
 
     private void createMenuBar() {
@@ -42,17 +88,18 @@ public class Application extends JFrame {
         file.setMnemonic(KeyEvent.VK_F);
 
         JMenuItem eMenuItem = new JMenuItem("Exit", icon);
-        JMenuItem savegameMenuItem = new JMenuItem("Zapisz gre");
-        JMenuItem newgameMenuItem = new JMenuItem("Nowa gra");
+        JMenuItem savegameMenuItem = new JMenuItem("Save Game");
+        JMenuItem newgameMenuItem = new JMenuItem("New Game");
         eMenuItem.setMnemonic(KeyEvent.VK_E);
         eMenuItem.setToolTipText("Exit application");
-        eMenuItem.addActionListener((ActionEvent event) -> {
+        eMenuItem.addActionListener((ActionEvent eventexit) -> {
             System.exit(0);
         });
+        newgameMenuItem.addActionListener((ActionEvent eventnew)-> {Application.this.dispose(); Application.main(null);});
 
-        file.add(eMenuItem);
-        file.add(savegameMenuItem);
         file.add(newgameMenuItem);
+        file.add(savegameMenuItem);
+        file.add(eMenuItem);
 
         menubar.add(file);
         menubar.add(help);
