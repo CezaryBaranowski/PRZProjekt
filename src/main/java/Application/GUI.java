@@ -5,34 +5,37 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class GUI extends JFrame {
+public class GUI {
+
+    JFrame frame;
 
     public void initUI() {
 
-        createMenuBar();
-        Tab.createTabs(this);
+        frame = new JFrame("Aplikancja");
+        frame.pack();
+        frame.setSize(1280, 800);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        pack();
-        setTitle("Aplikancja");
-        setSize(1280, 800);
-        setLocationRelativeTo(null);
-        setVisible(true);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        createMenuBar();
+        Tab.createTabs(frame);
     }
 
     private void createMenuBar() {
 
         JMenuBar menubar = new JMenuBar();
-        ImageIcon icon = new ImageIcon("exit.png");
+        //ImageIcon icon = new ImageIcon("exit.png");
 
         JMenu file = new JMenu("File");
         JMenu help = new JMenu("Pomoc");
         file.setMnemonic(KeyEvent.VK_F);
 
-        JMenuItem eMenuItem = new JMenuItem("Exit", icon);
+        JMenuItem eMenuItem = new JMenuItem("Exit");
         JMenuItem savegameMenuItem = new JMenuItem("Save Game");
         JMenuItem newgameMenuItem = new JMenuItem("New Game");
         eMenuItem.setMnemonic(KeyEvent.VK_E);
@@ -40,7 +43,7 @@ public class GUI extends JFrame {
         eMenuItem.addActionListener((ActionEvent eventexit) -> {
             System.exit(0);
         });
-        newgameMenuItem.addActionListener((ActionEvent eventnew)-> {this.dispose(); Application.main(null);});
+        newgameMenuItem.addActionListener((ActionEvent eventnew)-> {frame.dispose(); Application.main(null);});
 
         file.add(newgameMenuItem);
         file.add(savegameMenuItem);
@@ -49,10 +52,10 @@ public class GUI extends JFrame {
         menubar.add(file);
         menubar.add(help);
 
-        setJMenuBar(menubar);
+        frame.setJMenuBar(menubar);
     }
 
-    private void createLayout(JComponent... arg) {
+  /*  private void createLayout(JComponent... arg) {
 
         Container pane = getContentPane();
         GroupLayout gl = new GroupLayout(pane);
@@ -67,6 +70,6 @@ public class GUI extends JFrame {
         gl.setVerticalGroup(gl.createSequentialGroup()
                 .addComponent(arg[0])
         );
-    }
+    }*/
 
 }

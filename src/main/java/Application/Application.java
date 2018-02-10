@@ -8,7 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class Application extends JFrame {
+public class Application {
 
     public Application() {
 
@@ -20,7 +20,7 @@ public class Application extends JFrame {
 
         EventQueue.invokeLater(() -> {
             Application ex = new Application();
-            ex.setVisible(true);
+            //ex.setVisible(true);
         });
     }
 }
