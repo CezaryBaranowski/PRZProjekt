@@ -40,10 +40,10 @@ public class GUI {
         JMenuItem newgameMenuItem = new JMenuItem("New Game");
         eMenuItem.setMnemonic(KeyEvent.VK_E);
         eMenuItem.setToolTipText("Exit application");
-        eMenuItem.addActionListener((ActionEvent eventexit) -> {
+        eMenuItem.addActionListener((ActionEvent eventExit) -> {
             System.exit(0);
         });
-        newgameMenuItem.addActionListener((ActionEvent eventnew)-> {frame.dispose(); Application.main(null);});
+        newgameMenuItem.addActionListener((ActionEvent eventNew)-> {frame.dispose(); Application.main(null);});
 
         file.add(newgameMenuItem);
         file.add(savegameMenuItem);
