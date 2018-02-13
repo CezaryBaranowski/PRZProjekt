@@ -4,56 +4,46 @@ import java.util.Date;
 
 public class FlightOrder {
 
-    private String from;
-    private String destination;
-    private Date fromDate;
-    private Date toDate;
+    private Airport from;
+    private Airport destination;
+    private int daysToExpiration;
     private int amountOfPassengers;
     private int prize;
     private int penalty;
     private Double distance;
 
-    public FlightOrder(String from, String destination, Date fromDate, Date toDate, int amountOfPassengers, int prize, int penalty, Double distance) {
+    public FlightOrder(Airport from, Airport destination, int daysToExpiration, int amountOfPassengers, int prize, int penalty, Double distance) {
         this.from = from;
         this.destination = destination;
-        this.fromDate = fromDate;
-        this.toDate = toDate;
+        this.daysToExpiration = daysToExpiration;
         this.amountOfPassengers = amountOfPassengers;
         this.prize = prize;
         this.penalty = penalty;
         this.distance = distance;
     }
 
-    public String getFrom() {
+    public Airport getFrom() {
         return from;
     }
 
-    public void setFrom(String from) {
+    public void setFrom(Airport from) {
         this.from = from;
     }
 
-    public String getDestination() {
+    public Airport getDestination() {
         return destination;
     }
 
-    public void setDestination(String destination) {
+    public void setDestination(Airport destination) {
         this.destination = destination;
     }
 
-    public Date getFromDate() {
-        return fromDate;
+    public int getDaysToExpiration() {
+        return daysToExpiration;
     }
 
-    public void setFromDate(Date fromDate) {
-        this.fromDate = fromDate;
-    }
-
-    public Date getToDate() {
-        return toDate;
-    }
-
-    public void setToDate(Date toDate) {
-        this.toDate = toDate;
+    public void setDaysToExpiration(int daysToExpiration) {
+        this.daysToExpiration = daysToExpiration;
     }
 
     public int getAmountOfPassengers() {

@@ -8,6 +8,10 @@ public class Plane {
     private int capacity;
     private int range;
     private Double costFactor;      // wspolczynnik kosztow
+    private Airport location;
+
+    Boolean available;
+
 
     public Plane(String brand, String model, int productionYear, int capacity, int range, Double costFactor) {
         this.brand = brand;
@@ -65,4 +69,12 @@ public class Plane {
     public void setCostFactor(Double costFactor) {
         this.costFactor = costFactor;
     }
+
+    public Airport getLocation() { return location; }
+
+    public void setLocation(Airport location) { this.location = location; }
+
+    public Boolean getAvailable() { return available; }
+
+    public void setAvailable(Boolean available) { this.available = available; }
 }
