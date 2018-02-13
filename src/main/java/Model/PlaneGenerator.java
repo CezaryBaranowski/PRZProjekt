@@ -4,29 +4,32 @@ import Application.Application;
 import org.apache.commons.math.util.MathUtils;
 import org.hibernate.criterion.Order;
 
+import java.time.Year;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 public class PlaneGenerator {
 
-    ArrayList<Plane> allPlanes;
-    ArrayList<Plane> boughtPlanes;
+    private static ArrayList<Plane> availablePlanes = new ArrayList<Plane>();
 
-    public Plane generatePlane()
+    private static int drawnNumber;
+
+    private static String brand;
+    private static String model;
+    private static int productionYear;
+    private static int capacity;
+    private static int range;
+    private static Double costFactor;      // wspolczynnik kosztow
+    private static int price;
+    private static Airport location;
+    private static Boolean available;
+
+    public static Plane generatePlane()
     {
-        int drawnNumber;
 
-        String brand;
-        String model;
-        int productionYear;
-        int capacity;
-        int range;
-        Double costFactor;      // wspolczynnik kosztow
-        int price;
-        Airport location;
-        Boolean available;
-
-        int amountOfAirplaneTypes = Application.getAirports().size();
+        int amountOfAirplaneTypes = Application.getPlanes().size();
         Random rand = new Random();
         drawnNumber = rand.nextInt(amountOfAirplaneTypes);
         brand = Application.getPlanes().get(drawnNumber).getBrand();
@@ -34,19 +37,21 @@ public class PlaneGenerator {
         capacity = Application.getPlanes().get(drawnNumber).getCapacity();
         range = Application.getPlanes().get(drawnNumber).getRange();
         costFactor = Application.getPlanes().get(drawnNumber).getCostFactor();
-        location = Application.getAirports().get(0);
+        location = Application.getAirports().get(42);
         available = true;
         price = Application.getPlanes().get(drawnNumber).getPrice();
 
         //teraz drawnnumber to wiek samolotu
         drawnNumber = rand.nextInt(Application.getPlanes().get(drawnNumber).getProducedTo() - Application.getPlanes().get(drawnNumber).getProducedFrom());
-        productionYear = drawnNumber + Application.getPlanes().get(drawnNumber).getProducedFrom();
+       // productionYear = drawnNumber + Application.getPlanes().get(drawnNumber).getProducedFrom();
+        productionYear = Calendar.getInstance().get(Calendar.YEAR) - drawnNumber;
         // 2% wartosci co rok
         double percentValue = 1.0 - (drawnNumber * 0.02);
         double priceDouble = price * percentValue;
         price = (int) priceDouble ;
 
         Plane newPlane = new Plane(brand,model,productionYear,capacity,range,costFactor,price,location,available);
+        availablePlanes.add(newPlane);
         return newPlane;
     }
 

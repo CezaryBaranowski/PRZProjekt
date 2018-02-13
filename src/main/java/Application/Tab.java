@@ -67,8 +67,6 @@ public class Tab extends JPanel {
         GridBagConstraints c1 = new GridBagConstraints();
         JTable table = new JTable();
         DefaultTableModel model = new DefaultTableModel(Application.getAirportsVectors(),Application.getAirportHeaders());
-        //table.setPreferredScrollableViewportSize(new Dimension(500,500));
-        //table.setIntercellSpacing(new Dimension(5,5));
         table.setGridColor(new Color(20,200,50));
         table.setModel(model);
         //table.setBounds(50, 50, 200, 400);
@@ -77,8 +75,6 @@ public class Tab extends JPanel {
         JButton button = new JButton("Hello");
         JTextField field = new JTextField("Tu wpisz tekst");
 
-       // c1.gridwidth = 8;
-        //c1.gridheight = 16;
         c1.weighty = 4;
         c1.weightx = 2;
         c1.anchor = GridBagConstraints.NORTHWEST;
@@ -93,22 +89,24 @@ public class Tab extends JPanel {
 
     private static void arrangepanel2(JComponent panel)
     {
-        panel.setLayout(new GridBagLayout());
-        GridBagConstraints c1 = new GridBagConstraints();
-        JScrollPane scrollPane = new JScrollPane();
+        //panel.setLayout(new GridBagLayout());
+        GridBagConstraints c2 = new GridBagConstraints();
         JTable table = new JTable();
-        scrollPane.add(table);
-        JButton button = new JButton("Helllloo");
-        JTextField field = new JTextField("Tu wpisz tekst");
-        c1.gridx = 1;
-        c1.gridy = 0;
-        c1.gridwidth = 8;
-        c1.gridheight = 16;
-        panel.add(button,c1);
+        DefaultTableModel model = new DefaultTableModel(Application.getVectorsFromPlanes(Simulation.getAvailablePlanes()),Application.getPlaneHeaders());
+        table.setGridColor(new Color(20,180,170));
+        table.setModel(model);
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        c2.gridx = 1;
+        c2.gridy = 0;
+        c2.gridwidth = 0;
+        c2.gridheight = 0;
+        c2.ipady = 3;
+        c2.insets = new Insets(10,20,30,40);
+        c2.fill = GridBagConstraints.FIRST_LINE_START;
+        panel.add(scrollPane,c2);
         //c1.anchor = GridBagConstraints.NORTH;
-        c1.gridx = 2;
-        c1.gridy = 2;
-        panel.add(field,c1);
+        //panel.add(field,c1);
     }
 
     private static void arrangepanel3(JComponent panel)

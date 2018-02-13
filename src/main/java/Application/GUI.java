@@ -24,6 +24,7 @@ public class GUI {
 
         createMenuBar();
         Tab.createTabs(frame);
+        //frame.pack();
     }
 
     private void createMenuBar() {

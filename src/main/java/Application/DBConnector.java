@@ -120,7 +120,5 @@ public class DBConnector {
         }
 
         return planes;
-
     }
-
 }
