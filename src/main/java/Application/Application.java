@@ -1,6 +1,7 @@
 package Application;
 
 import Model.Airport;
+import Model.Plane;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,22 +15,25 @@ import javax.swing.*;
 
 public class Application {
 
-    private static ArrayList<Airport>airports;
+    private static ArrayList<Airport> airports;
+    private static ArrayList<Plane> planes;
     private static Vector <String> airportHeaders;
+    private static Vector <String> planeHeaders;
+    private Vector<String> boughtPlanes;
+    private Vector<String> takenOrders;
 
     public Application() {
 
         airports = new ArrayList<Airport>();
+        planes = new ArrayList<Plane>();
         airportHeaders = new Vector<String>();
+        boughtPlanes = new Vector<String>();
         readDataFromDatabase();
 
         EventQueue.invokeLater(() -> {
             GUI gui = new GUI();
             gui.initUI();
         });
-
-      //  readDataFromDatabase();
-     //   setAirportHeaders();
 
     }
 
@@ -44,6 +48,7 @@ public class Application {
             protected Void doInBackground() throws Exception {
                 DBConnector dbc = new DBConnector();
                 airports =  dbc.getAirportData();
+                planes = dbc.getPlaneData();
                 setAirportHeaders();
                 return null;
             }
@@ -61,6 +66,10 @@ public class Application {
         return airports;
     }
 
+    public static ArrayList<Plane> getPlanes() {
+        return planes;
+    }
+
     public static Void setAirportHeaders()
     {
         airportHeaders.addElement("code");
@@ -72,9 +81,26 @@ public class Application {
         return null;
     }
 
+    public static Void setPlaneHeaders()
+    {
+        planeHeaders.addElement("brand");
+        planeHeaders.addElement("model");
+        planeHeaders.addElement("productionyear");
+        planeHeaders.addElement("capacity");
+        planeHeaders.addElement("range");
+        planeHeaders.addElement("costfactor");
+        planeHeaders.addElement("price");
+        return null;
+    }
+
     public static Vector<String> getAirportHeaders()
     {
         return airportHeaders;
+    }
+
+    public static Vector<String> getPlaneHeaders()
+    {
+        return planeHeaders;
     }
 
     public static Vector getAirportsVectors()

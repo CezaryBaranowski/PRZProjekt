@@ -22,27 +22,32 @@ public class PlaneGenerator {
         int capacity;
         int range;
         Double costFactor;      // wspolczynnik kosztow
+        int price;
         Airport location;
+        Boolean available;
 
-        int maxAmountOfAirports = Application.getAirports().size();
+        int amountOfAirplaneTypes = Application.getAirports().size();
         Random rand = new Random();
-        drawnNumber = rand.nextInt(maxAmountOfAirports);            //  generuj lotnisko startowe
-        from = Application.getAirports().get(drawnNumber);
-        drawnNumber = rand.nextInt(maxAmountOfAirports);            // generuj lotnisko docelowe
-        destination = Application.getAirports().get(drawnNumber);
-        if(from.equals(destination)) from = Application.getAirports().get(0);
-        drawnNumber = rand.nextInt(6) + 1;                  // generuje ile dnie wazne
-        daysToExpiration = drawnNumber;
-        drawnNumber = rand.nextInt(2990000) + 10000;         // generuj nagrode
-        prize = (int) MathUtils.round((double)drawnNumber, -1); // zaokraglij ja do 10
-        penalty = (int) (prize * (rand.nextDouble()*2.0));          // generuj kare
+        drawnNumber = rand.nextInt(amountOfAirplaneTypes);
+        brand = Application.getPlanes().get(drawnNumber).getBrand();
+        model = brand = Application.getPlanes().get(drawnNumber).getModel();
+        capacity = Application.getPlanes().get(drawnNumber).getCapacity();
+        range = Application.getPlanes().get(drawnNumber).getRange();
+        costFactor = Application.getPlanes().get(drawnNumber).getCostFactor();
+        location = Application.getAirports().get(0);
+        available = true;
+        price = Application.getPlanes().get(drawnNumber).getPrice();
 
-        drawnNumber = rand.nextInt(310) + 90;                // generuj liczbe pasazerow
-        amountOfPassengers = drawnNumber;
-        distance = calculateDistance(Double.parseDouble(from.getLatitude()),Double.parseDouble(from.getLongtitude()),Double.parseDouble(destination.getLatitude()),Double.parseDouble(destination.getLongtitude()),'K');
+        //teraz drawnnumber to wiek samolotu
+        drawnNumber = rand.nextInt(Application.getPlanes().get(drawnNumber).getProducedTo() - Application.getPlanes().get(drawnNumber).getProducedFrom());
+        productionYear = drawnNumber + Application.getPlanes().get(drawnNumber).getProducedFrom();
+        // 2% wartosci co rok
+        double percentValue = 1.0 - (drawnNumber * 0.02);
+        double priceDouble = price * percentValue;
+        price = (int) priceDouble ;
 
-        FlightOrder newOrder = new FlightOrder(from,destination,daysToExpiration,amountOfPassengers,prize,penalty,distance);
-        return newOrder;
+        Plane newPlane = new Plane(brand,model,productionYear,capacity,range,costFactor,price,location,available);
+        return newPlane;
     }
 
 

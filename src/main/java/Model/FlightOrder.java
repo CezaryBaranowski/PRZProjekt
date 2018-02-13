@@ -1,8 +1,9 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class FlightOrder {
+public class FlightOrder implements Serializable {
 
     private Airport from;
     private Airport destination;

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Vector;
 
 import Model.Airport;
+import Model.Plane;
 
 
 
@@ -73,8 +74,7 @@ public class DBConnector {
 
     public ArrayList<Airport> getAirportData() throws IOException, SQLException {
 
-        //connection=getConnection();
-        statement = connection.createStatement();//zapytanie w tej bazie
+        statement = connection.createStatement();
 
         final String selectTableSQL = "Select *" +
                 "from airport  " +
@@ -99,6 +99,28 @@ public class DBConnector {
             values[i][1] = incomes.get(i).getNetAmount().toString();
         }
         return values;*/
+    }
+
+
+    public ArrayList<Plane> getPlaneData() throws IOException, SQLException {
+
+        statement = connection.createStatement();
+
+        final String selectTableSQL = "Select *" +
+                "from airplane  " +
+                "order by airplane.brand ";
+
+        ArrayList<Plane> planes = new ArrayList<Plane>();
+        ResultSet rs = statement.executeQuery(selectTableSQL);
+        while (rs.next()) {
+            Plane plane = new Plane(rs.getString("brand"),rs.getString("model"),
+                    rs.getInt("prodstart"),rs.getInt("prodend"),rs.getInt("capacity"),
+                    rs.getInt("range"), rs.getDouble("costfactor"),rs.getInt("price"));
+            planes.add(plane);
+        }
+
+        return planes;
+
     }
 
 }
