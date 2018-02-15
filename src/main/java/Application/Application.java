@@ -25,6 +25,7 @@ public class Application {
         planes = new ArrayList<Plane>();
         airportHeaders = new Vector<String>();
         planeHeaders = new Vector<String>();
+        ordersHeaders = new Vector<String>();
         try {
             readDataFromDatabase();
         }
@@ -69,6 +70,7 @@ public class Application {
         planes = dbc.getPlaneData();
         setAirportHeaders();
         setPlaneHeaders();
+        setOrderHeaders();
 
  /*       try {
             Thread.sleep(3000);
@@ -80,9 +82,7 @@ public class Application {
         return airports;
     }
 
-    public static ArrayList<Plane> getPlanes() {
-        return planes;
-    }
+    public static ArrayList<Plane> getPlanes() { return planes; }
 
     public static Void setAirportHeaders()
     {
@@ -130,10 +130,7 @@ public class Application {
         return planeHeaders;
     }
 
-    public static Vector<String> getOrdersHeaders()
-    {
-        return ordersHeaders;
-    }
+    public static Vector<String> getOrdersHeaders() { return ordersHeaders; }
 
     public static Vector getAirportsVectors()
     {
@@ -158,8 +155,8 @@ public class Application {
         for(FlightOrder fo: list)
         {
             Vector<Object> row = new Vector<>();
-            row.addElement(fo.getFrom());
-            row.addElement(fo.getDestination());
+            row.addElement(fo.getFrom().getCity());
+            row.addElement(fo.getDestination().getCity());
             row.addElement(fo.getAmountOfPassengers());
             row.addElement(fo.getDistance());
             row.addElement(fo.getPrize());
@@ -179,7 +176,7 @@ public class Application {
             row.addElement(p.getBrand());
             row.addElement(p.getModel());
             row.addElement(p.getRange());
-            row.addElement(p.getLocation());
+            row.addElement(p.getLocation().getCity());
             row.addElement(p.getCapacity());
             row.addElement(p.getProductionYear());
             row.addElement(p.getCostFactor());

@@ -17,13 +17,13 @@ public class GUI {
 
         frame = new JFrame("Aplikancja");
         frame.pack();
-        frame.setSize(1280, 800);
+        frame.setSize(1024, 768);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         createMenuBar();
-        Tab.createTabs(frame);
+        Tab tab = new Tab(frame);
         //frame.pack();
     }
 
@@ -33,7 +33,7 @@ public class GUI {
         //ImageIcon icon = new ImageIcon("exit.png");
 
         JMenu file = new JMenu("File");
-        JMenu help = new JMenu("Pomoc");
+        JMenu help = new JMenu("Help");
         file.setMnemonic(KeyEvent.VK_F);
 
         JMenuItem eMenuItem = new JMenuItem("Exit");

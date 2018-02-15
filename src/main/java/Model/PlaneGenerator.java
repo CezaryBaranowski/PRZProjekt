@@ -33,7 +33,7 @@ public class PlaneGenerator {
         Random rand = new Random();
         drawnNumber = rand.nextInt(amountOfAirplaneTypes);
         brand = Application.getPlanes().get(drawnNumber).getBrand();
-        model = brand = Application.getPlanes().get(drawnNumber).getModel();
+        model = Application.getPlanes().get(drawnNumber).getModel();
         capacity = Application.getPlanes().get(drawnNumber).getCapacity();
         range = Application.getPlanes().get(drawnNumber).getRange();
         costFactor = Application.getPlanes().get(drawnNumber).getCostFactor();
