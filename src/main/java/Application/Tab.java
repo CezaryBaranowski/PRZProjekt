@@ -112,7 +112,6 @@ public class Tab extends JPanel {
         c1.gridy = 2;
         c1.insets = new Insets(0,20,0,0);
         c1.fill = GridBagConstraints.BOTH;
-        Dimension d = table.getPreferredSize();
         JScrollPane scrollPane = new JScrollPane(table);
       //  scrollPane.setPreferredSize(new Dimension(d.width,table.getRowHeight()*table.getRowCount()));
         panel.add(scrollPane,c1);
@@ -133,23 +132,22 @@ public class Tab extends JPanel {
         table2.setGridColor(new Color(20,200,50));
         table2.setModel(model2);
         table2.setShowGrid(true);
-        d = table2.getPreferredSize();
         JScrollPane scrollPane2 = new JScrollPane(table2);
   //      scrollPane2.setPreferredSize(new Dimension(d.width,table2.getRowHeight()*table2.getRowCount()+1));
         c1.anchor = GridBagConstraints.NORTHWEST;
         c1.gridy = 4;
-        c1.insets = new Insets(0,20,50,0);
+        c1.insets = new Insets(0,20,20,0);
         panel.add(scrollPane2,c1);
 
 
         JLabel dayLabel = new JLabel();
         dayLabel.setText("DAY " + Simulation.getDay().toString());
         dayLabel.setFont(new Font("Calibri",Font.PLAIN,28));
-        dayLabel.setForeground(Color.BLUE);
+        dayLabel.setForeground(Color.orange);
         c1.anchor = GridBagConstraints.NORTH;
         c1.gridy = 1;
         c1.fill = GridBagConstraints.VERTICAL;
-        c1.insets = new Insets(0,0,150,20);
+        c1.insets = new Insets(0,0,0,20);
         panel.add(dayLabel,c1);
 
 
@@ -184,9 +182,6 @@ public class Tab extends JPanel {
         JLabel titleLabel = new JLabel("PLANES");
         titleLabel.setFont(new Font("Calibri",Font.PLAIN,40));
         titleLabel.setForeground(Color.CYAN);
-   //     c2.insets = new Insets(10,0,0,0);
-   //     c2.gridy = 0;
-   //     c2.fill = GridBagConstraints.NORTHWEST;
         c2.anchor = GridBagConstraints.FIRST_LINE_START;
         panel.add(titleLabel,c2);
 
@@ -199,7 +194,7 @@ public class Tab extends JPanel {
         c2.weightx = 2;
         c2.gridy = 0;
         c2.gridx = 0;
-        c2.gridwidth = 3;
+       // c2.gridwidth = 3;
         c2.fill = GridBagConstraints.VERTICAL;
         c2.insets = new Insets(120,20,0,0);
         panel.add(boughtPlanesLabel,c2);
@@ -213,13 +208,12 @@ public class Tab extends JPanel {
         c2.weighty = 6;
         c2.weightx = 2;
 
-        c2.anchor = GridBagConstraints.NORTH;
+        c2.anchor = GridBagConstraints.NORTHWEST;
         c2.gridy = 1;
         c2.gridwidth = 3;
         c2.gridheight = 1;
         c2.fill = GridBagConstraints.BOTH;
-        c2.insets = new Insets(0,20,100,0);
-        Dimension d = table.getPreferredSize();
+        c2.insets = new Insets(0,20,120,0);
         JScrollPane scrollPane = new JScrollPane(table);
         //scrollPane.setPreferredSize(new Dimension(d.width,table.getRowHeight()*table.getRowCount()+1));
         panel.add(scrollPane,c2);
@@ -228,9 +222,12 @@ public class Tab extends JPanel {
         JLabel acceptedOrdersLabel = new JLabel("AVAILABLE PLANES");
         acceptedOrdersLabel.setFont(new Font("Calibri",Font.PLAIN,28));
         acceptedOrdersLabel.setForeground(Color.GREEN);
+        c2.weighty = 6;
+        c2.weightx = 2;
+        c2.fill = GridBagConstraints.BOTH;
         c2.anchor = GridBagConstraints.NORTHWEST;
         c2.gridy = 1;
-        c2.insets = new Insets(220,20,0,0);
+        c2.insets = new Insets(240,20,0,0);
         panel.add(acceptedOrdersLabel,c2);
 
 
@@ -240,20 +237,20 @@ public class Tab extends JPanel {
         table2.setGridColor(new Color(20,200,50));
         table2.setModel(model2);
         table2.setShowGrid(true);
-        d = table2.getPreferredSize();
         JScrollPane scrollPane2 = new JScrollPane(table2);
         scrollPane2.setPreferredSize(new Dimension(600,150));
       //  scrollPane2.setPreferredSize(new Dimension(d.width,table2.getRowHeight()*table2.getRowCount()+1));
+        c2.fill = GridBagConstraints.BOTH;
         c2.anchor = GridBagConstraints.NORTHWEST;
         c2.gridy = 3;
-        c2.insets = new Insets(0,20,50,0);
+        c2.insets = new Insets(0,20,20,0);
         panel.add(scrollPane2,c2);
 
 
         JLabel dayLabel = new JLabel();
         dayLabel.setText("DAY " + Simulation.getDay().toString());
         dayLabel.setFont(new Font("Calibri",Font.PLAIN,28));
-        dayLabel.setForeground(Color.BLUE);
+        dayLabel.setForeground(Color.orange);
         c2.anchor = GridBagConstraints.NORTH;
         c2.gridy = 0;
         c2.gridx = 1;
@@ -304,32 +301,174 @@ public class Tab extends JPanel {
         c2.gridx = 0;
         c2.gridy = 1;
         c2.gridwidth = 1;
-        c2.insets = new Insets(220,260,0,0);
+        c2.insets = new Insets(230,260,0,0);
         panel.add(buyButton,c2);
-
-
 
     }
 
+
+
+
     private static void arrangepanel3(JComponent panel)
     {
+        panel.setLayout(new GridBagLayout());
         GridBagConstraints c3 = new GridBagConstraints();
-        JButton button1 = new JButton("Hello1");
-        c3.gridx = 1;
+        JLabel titleLabel = new JLabel("ORDERS");
+        titleLabel.setFont(new Font("Calibri",Font.PLAIN,40));
+        titleLabel.setForeground(Color.RED);
+        c3.anchor = GridBagConstraints.FIRST_LINE_START;
+        panel.add(titleLabel,c3);
+
+
+        JLabel boughtPlanesLabel = new JLabel("YOUR ORDERS");
+        boughtPlanesLabel.setFont(new Font("Calibri",Font.PLAIN,28));
+        boughtPlanesLabel.setForeground(Color.RED);
+        c3.anchor = GridBagConstraints.NORTHWEST;
+        c3.weighty = 6;
+        c3.weightx = 2;
+        c3.gridy = 0;
+        c3.gridx = 0;
+        c3.gridwidth = 3;
+        c3.fill = GridBagConstraints.BOTH;
+        c3.insets = new Insets(10,20,50,0);
+        panel.add(boughtPlanesLabel,c3);
+
+
+        JTable table = new JTable();
+        DefaultTableModel model = new DefaultTableModel(Application.getVectorsFromOrders(Simulation.getTakenFlightOrders()),Application.getOrdersHeaders());
+        //  table.setPreferredScrollableViewportSize(new Dimension(600,120));
+        table.setGridColor(new Color(20,200,50));
+        table.setModel(model);
+        c3.weighty = 6;
+        c3.weightx = 2;
+
+        c3.anchor = GridBagConstraints.NORTH;
+        c3.gridy = 0;
+        c3.gridwidth = 3;
+        c3.gridheight = 1;
+        c3.fill = GridBagConstraints.BOTH;
+        c3.insets = new Insets(200,20,0,0);
+        JScrollPane scrollPane = new JScrollPane(table);
+        //scrollPane.setPreferredSize(new Dimension(d.width,table.getRowHeight()*table.getRowCount()+1));
+        panel.add(scrollPane,c3);
+
+
+        JLabel acceptedOrdersLabel = new JLabel("AVAILABLE ORDERS");
+        acceptedOrdersLabel.setFont(new Font("Calibri",Font.PLAIN,28));
+        acceptedOrdersLabel.setForeground(Color.RED);
+        c3.anchor = GridBagConstraints.NORTHWEST;
         c3.gridy = 1;
-        panel.add(button1,c3);
-        JButton button2 = new JButton("Hello2");
-        c3.gridx = 2;
-        c3.gridy = 2;
-        panel.add(button2,c3);
-        JButton button3 = new JButton("Hello3");
-        c3.gridx = 3;
-        c3.gridy = 3;
-        panel.add(button3,c3);
-        JButton button4 = new JButton("Hello4");
-        c3.gridx = 4;
-        c3.gridy = 4;
-        panel.add(button4,c3);
+        c3.insets = new Insets(0,20,180,0);
+        panel.add(acceptedOrdersLabel,c3);
+
+
+        JTable table2 = new JTable();
+        DefaultTableModel model2 = new DefaultTableModel(Application.getVectorsFromOrders(Simulation.getAvailableFlightOrders()),Application.getOrdersHeaders());
+        table2.setPreferredScrollableViewportSize(new Dimension(600,120));
+        table2.setGridColor(new Color(20,200,50));
+        table2.setModel(model2);
+        table2.setShowGrid(true);
+        JScrollPane scrollPane2 = new JScrollPane(table2);
+        scrollPane2.setPreferredSize(new Dimension(600,150));
+        //  scrollPane2.setPreferredSize(new Dimension(d.width,table2.getRowHeight()*table2.getRowCount()+1));
+        c3.anchor = GridBagConstraints.NORTHWEST;
+        c3.gridy = 1;
+        c3.insets = new Insets(100,20,0,0);
+        panel.add(scrollPane2,c3);
+
+
+        JLabel dayLabel = new JLabel();
+        dayLabel.setText("DAY " + Simulation.getDay().toString());
+        dayLabel.setFont(new Font("Calibri",Font.PLAIN,28));
+        dayLabel.setForeground(Color.orange);
+        c3.anchor = GridBagConstraints.NORTH;
+        c3.gridy = 0;
+        c3.gridx = 1;
+        c3.fill = GridBagConstraints.VERTICAL;
+        c3.insets = new Insets(20,0,150,20);
+        panel.add(dayLabel,c3);
+
+
+        JLabel balanceLabel = new JLabel();
+        balanceLabel.setText("BALANCE " + Simulation.getBalance().toString());
+        balanceLabel.setFont(new Font("Calibri",Font.PLAIN,32));
+        c3.anchor = GridBagConstraints.NORTH;
+        c3.gridy = 0;
+        c3.gridx = 1;
+        c3.fill = GridBagConstraints.VERTICAL;
+        c3.insets = new Insets(0,0,50,20);
+        panel.add(balanceLabel,c3);
+
+
+        JButton nextDayButton = new JButton("NEXT DAY");
+        nextDayButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Simulation.dailyUpdate();
+
+                pane1.removeAll();
+                pane2.removeAll();
+                pane3.removeAll();
+                arrangepanel1(pane1);
+                arrangepanel2(pane2);
+                arrangepanel3(pane3);
+
+            }
+
+        });
+
+        c3.anchor = GridBagConstraints.NORTHEAST;
+        c3.gridy = 0;
+        c3.gridheight = 1;
+        c3.weighty = 6;
+        c3.fill = GridBagConstraints.VERTICAL;
+        c3.insets = new Insets(20,0,240,20);
+        panel.add(nextDayButton,c3);
+
+
+        JButton buyButton = new JButton("BUY");
+        c3.fill = GridBagConstraints.NONE;
+        c3.anchor = GridBagConstraints.WEST;
+        c3.gridheight = 1;
+        c3.gridx = 0;
+        c3.gridy = 1;
+        c3.gridwidth = 1;
+        c3.insets = new Insets(220,260,0,0);
+        panel.add(buyButton,c3);
+
+        JTextField idOrderField = new JTextField(3);
+        idOrderField.setBackground(Color.yellow);
+        idOrderField.setText("Tu wpisz id zlecenia");
+        c3.anchor = GridBagConstraints.WEST;
+        c3.fill = GridBagConstraints.HORIZONTAL;
+        c3.gridy = 0;
+        c3.gridx = 0;
+        c3.gridwidth = 1;
+        c3.gridheight = 1;
+        c3.insets = new Insets(0,260,180,50);
+        panel.add(idOrderField,c3);
+
+        JTextField idPlaneField = new JTextField(3);
+        idPlaneField.setBackground(Color.orange);
+        idPlaneField.setText("Tu wpisz id samolotu");
+        c3.anchor = GridBagConstraints.WEST;
+        c3.fill = GridBagConstraints.HORIZONTAL;
+        c3.gridy = 0;
+        c3.gridx = 0;
+        c3.gridwidth = 1;
+        c3.gridheight = 1;
+        c3.insets = new Insets(0,260,300,50);
+        panel.add(idPlaneField,c3);
+
+        JButton assignmentButton = new JButton("ASSIGN ORDER");
+        c3.anchor = GridBagConstraints.WEST;
+        c3.fill = GridBagConstraints.HORIZONTAL;
+        c3.gridy = 0;
+        c3.gridx = 0;
+        c3.gridwidth = 1;
+        c3.gridheight = 1;
+        c3.insets = new Insets(20,260,260,50);
+        panel.add(assignmentButton,c3);
     }
 
 /*
