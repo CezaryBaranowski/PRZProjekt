@@ -11,8 +11,6 @@ import java.util.Vector;
 import Model.Airport;
 import Model.Plane;
 
-
-
 public class DBConnector {
 
     private String provider;
@@ -21,8 +19,6 @@ public class DBConnector {
     private String pass;
     private Connection connection = null;
     private static Statement statement = null;
-
-
 
     public DBConnector()
     {
@@ -90,15 +86,6 @@ public class DBConnector {
         }
 
         return airports;
-
-     /*   int rows = airports.size();
-        String [][] values = new String[rows][6];
-        for(int i=0; i<airports.size();i++)
-        {
-            values[i][0] = airports.get(i).getCountry().toString();
-            values[i][1] = incomes.get(i).getNetAmount().toString();
-        }
-        return values;*/
     }
 
 

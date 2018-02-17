@@ -1,15 +1,15 @@
 package Application;
 
+import API.Weather;
 import Model.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
 // Singleton
 public class Simulation {
 
-    private static Double balance;
+    private static Integer balance;
     private static ArrayList<Plane> boughtPlanes = new ArrayList<Plane>();
     private static ArrayList<Plane> availablePlanes = new ArrayList<Plane>();
     private static ArrayList<FlightOrder> availableFlightOrders = new ArrayList<FlightOrder>();
@@ -19,17 +19,17 @@ public class Simulation {
     private static Integer day;
 
     private static Simulation simulation = null;
+
     protected Simulation()
     {
-        balance = 0.0;
+        balance = 10000000;
+        day = 1;
     }
     public static Simulation getInstance()
     {
         if(simulation == null){
             simulation = new Simulation();
         }
-        day = 1;
-        balance = 0.0;
         return simulation;
     }
 
@@ -39,12 +39,12 @@ public class Simulation {
         generateStartPlanes();
     }
 
-    public static Double getBalance() {
+    public static Integer getBalance() {
         return balance;
     }
 
-    public void setBalance(Double balance) {
-        this.balance = balance;
+    public static void setBalance(Integer bal) {
+        balance = bal;
     }
 
     public static Integer getDay() { return day; }
@@ -93,15 +93,14 @@ public class Simulation {
         day++;
         updateDailyAvailableOrders();
         updateDailyAvailablePlanes();
+        updateDailyTakenOrders();
     }
 
     public static void updateDailyAvailableOrders()
     {
-        //ArrayList<FlightOrder> flightOrdersToDelete = new ArrayList<FlightOrder>();
         for(FlightOrder fo : availableFlightOrders)
         {
             fo.setDaysToExpiration(fo.getDaysToExpiration()-1);
-            //if(fo.getDaysToExpiration()<1) availableFlightOrders.add(fo);
         }
         availableFlightOrders.removeIf(new Predicate<FlightOrder>() {
             @Override
@@ -114,12 +113,58 @@ public class Simulation {
         availableFlightOrders.add(FlightOrderGenerator.generateOrder());
         availableFlightOrders.add(FlightOrderGenerator.generateOrder());
         availableFlightOrders.add(FlightOrderGenerator.generateOrder());
-        availableFlightOrders.add(FlightOrderGenerator.generateOrder());
+    }
+
+    public static void updateDailyTakenOrders()
+    {
+        for(FlightOrder fo : takenFlightOrders)
+        {
+            fo.setDaysToExpiration(fo.getDaysToExpiration()-1);
+        }
+        takenFlightOrders.removeIf(new Predicate<FlightOrder>() {
+            @Override
+            public boolean test(FlightOrder flightOrder) {
+                if(flightOrder.getDaysToExpiration()<1) {
+                    Simulation.setBalance(Simulation.getBalance() - flightOrder.getPenalty());
+                    return true;
+                }
+                else return false;
+            }
+        });
+
     }
 
     public static void updateDailyAvailablePlanes()
     {
         availablePlanes.add(PlaneGenerator.generatePlane());
+
+        for(Plane p : boughtPlanes)
+        {
+            if(p.getAvailable() == false)
+            {
+                if(!p.getLocation().equals(p.getCurrentlyAssignedOrder().getFrom()))
+                p.setLocation(p.getCurrentlyAssignedOrder().getFrom());
+                else {
+                    p.setLocation(p.getCurrentlyAssignedOrder().getDestination());
+                    Simulation.balance += p.getCurrentlyAssignedOrder().getPrize();
+                    Simulation.balance -= calculateFlyCost(p.getCurrentlyAssignedOrder(),p.getCostFactor());
+                    Simulation.takenFlightOrders.remove(p.getCurrentlyAssignedOrder());
+                    p.setCurrentlyAssignedOrder(null);
+                    p.setAvailable(true);
+                }
+            }
+        }
+    }
+
+    public static Integer calculateFlyCost(FlightOrder order, double costFactor)
+    {
+        String cond = Weather.getConditions(order.getDestination().getCity());
+        if(cond.equals("Rain"))
+            costFactor += 0.1;
+        if(cond.equals("Fog"))
+            costFactor += 0.2;
+        Double totalCost = (order.getDistance()*costFactor*100.0);
+        return totalCost.intValue();
     }
 
 }

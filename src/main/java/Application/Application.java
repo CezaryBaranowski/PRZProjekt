@@ -97,6 +97,7 @@ public class Application {
 
     public static Void setPlaneHeaders()
     {
+        planeHeaders.addElement("number");
         planeHeaders.addElement("brand");
         planeHeaders.addElement("model");
         planeHeaders.addElement("range");
@@ -105,11 +106,13 @@ public class Application {
         planeHeaders.addElement("prodyear");
         planeHeaders.addElement("costfactor");
         planeHeaders.addElement("price");
+        planeHeaders.addElement("available");
         return null;
     }
 
     public static Void setOrderHeaders()
     {
+        ordersHeaders.addElement("number");
         ordersHeaders.addElement("from");
         ordersHeaders.addElement("destination");
         ordersHeaders.addElement("passengers");
@@ -152,9 +155,11 @@ public class Application {
     public static Vector getVectorsFromOrders(ArrayList<FlightOrder> list)
     {
         Vector data = new Vector();
+        Integer i = 1;
         for(FlightOrder fo: list)
         {
             Vector<Object> row = new Vector<>();
+            row.addElement(i.toString());
             row.addElement(fo.getFrom().getCity());
             row.addElement(fo.getDestination().getCity());
             row.addElement(fo.getAmountOfPassengers());
@@ -163,6 +168,7 @@ public class Application {
             row.addElement(fo.getPenalty());
             row.addElement(fo.getDaysToExpiration());
             data.addElement(row);
+            i++;
         }
         return data;
     }
@@ -170,9 +176,11 @@ public class Application {
     public static Vector getVectorsFromPlanes(ArrayList<Plane> list)
     {
         Vector data = new Vector();
+        Integer i = 1;
         for(Plane p: list)
         {
             Vector<Object> row = new Vector<>();
+            row.addElement(i.toString());
             row.addElement(p.getBrand());
             row.addElement(p.getModel());
             row.addElement(p.getRange());
@@ -181,7 +189,9 @@ public class Application {
             row.addElement(p.getProductionYear());
             row.addElement(p.getCostFactor());
             row.addElement(p.getPrice());
+            row.addElement(p.getAvailableToString());
             data.addElement(row);
+            i++;
         }
         return data;
     }

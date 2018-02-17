@@ -11,20 +11,19 @@ import java.io.IOException;
 
 public class GUI {
 
-    JFrame frame;
+    private JFrame frame;
 
     public void initUI() {
 
         frame = new JFrame("Aplikancja");
         frame.pack();
-        frame.setSize(1024, 768);
+        frame.setSize(1280, 720);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         createMenuBar();
         Tab tab = new Tab(frame);
-        //frame.pack();
     }
 
     private void createMenuBar() {
@@ -55,22 +54,5 @@ public class GUI {
 
         frame.setJMenuBar(menubar);
     }
-
-  /*  private void createLayout(JComponent... arg) {
-
-        Container pane = getContentPane();
-        GroupLayout gl = new GroupLayout(pane);
-        pane.setLayout(gl);
-
-        gl.setAutoCreateContainerGaps(true);
-
-        gl.setHorizontalGroup(gl.createSequentialGroup()
-                .addComponent(arg[0])
-        );
-
-        gl.setVerticalGroup(gl.createSequentialGroup()
-                .addComponent(arg[0])
-        );
-    }*/
 
 }

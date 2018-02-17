@@ -1,4 +1,8 @@
 package Events;
 
-public class NotEnoughMoneyEvent {
+import java.awt.event.ActionEvent;
+
+public class NotEnoughMoneyEvent  {
+
+
 }

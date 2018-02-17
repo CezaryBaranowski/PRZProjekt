@@ -1,5 +1,7 @@
 package Application;
 
+import Model.FlightOrder;
+import Model.Plane;
 import com.sun.javafx.binding.StringConstant;
 
 import javax.imageio.ImageIO;
@@ -66,9 +68,7 @@ public class Tab extends JPanel {
             e.printStackTrace();
             System.out.println("Nie udalo sie wczytac tla");
         }
-        //filler.setHorizontalAlignment(JLabel.CENTER);
-        //panel.setLayout(new GridLayout());
-       // panel.add(filler);
+
         panel.setOpaque(true);
         if(tab == 1) arrangepanel1(background);
         if(tab == 2) arrangepanel2(background);
@@ -162,6 +162,16 @@ public class Tab extends JPanel {
 
 
         JButton nextDayButton = new JButton("NEXT DAY");
+        nextDayButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Simulation.dailyUpdate();
+
+                refreshView();
+            }
+
+        });
+
         c1.anchor = GridBagConstraints.SOUTHEAST;
         c1.gridy = 0;
         c1.gridheight = 1;
@@ -227,7 +237,7 @@ public class Tab extends JPanel {
         c2.fill = GridBagConstraints.BOTH;
         c2.anchor = GridBagConstraints.NORTHWEST;
         c2.gridy = 1;
-        c2.insets = new Insets(240,20,0,0);
+        c2.insets = new Insets(160,20,0,0);
         panel.add(acceptedOrdersLabel,c2);
 
 
@@ -239,11 +249,10 @@ public class Tab extends JPanel {
         table2.setShowGrid(true);
         JScrollPane scrollPane2 = new JScrollPane(table2);
         scrollPane2.setPreferredSize(new Dimension(600,150));
-      //  scrollPane2.setPreferredSize(new Dimension(d.width,table2.getRowHeight()*table2.getRowCount()+1));
         c2.fill = GridBagConstraints.BOTH;
         c2.anchor = GridBagConstraints.NORTHWEST;
-        c2.gridy = 3;
-        c2.insets = new Insets(0,20,20,0);
+        c2.gridy = 2;
+        c2.insets = new Insets(0,20,0,0);
         panel.add(scrollPane2,c2);
 
 
@@ -276,11 +285,7 @@ public class Tab extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 Simulation.dailyUpdate();
 
-                pane1.removeAll();
-                pane2.removeAll();
-                arrangepanel1(pane1);
-                arrangepanel2(pane2);
-
+                refreshView();
             }
 
         });
@@ -301,7 +306,19 @@ public class Tab extends JPanel {
         c2.gridx = 0;
         c2.gridy = 1;
         c2.gridwidth = 1;
-        c2.insets = new Insets(230,260,0,0);
+        c2.insets = new Insets(160,260,0,0);
+        buyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Plane boughtPlane =  Simulation.getAvailablePlanes().get(table2.getSelectedRow());
+                if(Simulation.getBalance()>=boughtPlane.getPrice()) {
+                    Simulation.getBoughtPlanes().add(boughtPlane);
+                    Simulation.getAvailablePlanes().remove(boughtPlane);
+                    Simulation.setBalance(Simulation.getBalance() - boughtPlane.getPrice());
+                    refreshView();
+                }
+            }
+        });
         panel.add(buyButton,c2);
 
     }
@@ -377,6 +394,21 @@ public class Tab extends JPanel {
         panel.add(scrollPane2,c3);
 
 
+        JButton takeOrderButton = new JButton("TAKE");
+        takeOrderButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                FlightOrder takenOrder =  Simulation.getAvailableFlightOrders().get(table2.getSelectedRow());
+                Simulation.getTakenFlightOrders().add(takenOrder);
+                Simulation.getAvailableFlightOrders().remove(takenOrder);
+
+                refreshView();
+            }
+        });
+        c3.insets = new Insets(20,280,200,260);
+        panel.add(takeOrderButton,c3);
+
+
         JLabel dayLabel = new JLabel();
         dayLabel.setText("DAY " + Simulation.getDay().toString());
         dayLabel.setFont(new Font("Calibri",Font.PLAIN,28));
@@ -406,12 +438,7 @@ public class Tab extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 Simulation.dailyUpdate();
 
-                pane1.removeAll();
-                pane2.removeAll();
-                pane3.removeAll();
-                arrangepanel1(pane1);
-                arrangepanel2(pane2);
-                arrangepanel3(pane3);
+                refreshView();
 
             }
 
@@ -461,6 +488,22 @@ public class Tab extends JPanel {
         panel.add(idPlaneField,c3);
 
         JButton assignmentButton = new JButton("ASSIGN ORDER");
+        assignmentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                FlightOrder orderToAssign = Simulation.getTakenFlightOrders().get(Integer.parseInt(idOrderField.getText()) - 1);
+                Plane planeToAssign = Simulation.getBoughtPlanes().get(Integer.parseInt(idPlaneField.getText()) - 1);
+                if(planeToAssign.getAvailable()
+                    && planeToAssign.getCapacity()>=orderToAssign.getAmountOfPassengers()
+                    && planeToAssign.getRange()>=orderToAssign.getDistance())
+                {
+                    planeToAssign.setAvailable(false);
+                    planeToAssign.setCurrentlyAssignedOrder(orderToAssign);
+
+                    refreshView();
+                }
+            }
+        });
         c3.anchor = GridBagConstraints.WEST;
         c3.fill = GridBagConstraints.HORIZONTAL;
         c3.gridy = 0;
@@ -471,14 +514,15 @@ public class Tab extends JPanel {
         panel.add(assignmentButton,c3);
     }
 
-/*
-    @Override
-    protected void paintComponent(Graphics g)
+    public static void refreshView()
     {
-        super.paintComponent(g);
-        g.drawImage(img, 0,0,null);
-    }*/
-
+        pane1.removeAll();
+        pane2.removeAll();
+        pane3.removeAll();
+        arrangepanel1(pane1);
+        arrangepanel2(pane2);
+        arrangepanel3(pane3);
+    }
 
     public static class BackgroundPane extends JPanel {
 

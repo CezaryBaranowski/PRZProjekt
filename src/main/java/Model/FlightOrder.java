@@ -71,9 +71,7 @@ public class FlightOrder implements Serializable {
         this.penalty = penalty;
     }
 
-    public Double getDistance() {
-        return distance;
-    }
+    public Double getDistance() { return distance; }
 
     public void setDistance(Double distance) {
         this.distance = distance;

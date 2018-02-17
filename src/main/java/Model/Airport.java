@@ -37,9 +37,7 @@ public class Airport implements Serializable {
 
     public void setName(String name) { this.name = name; }
 
-    public String getCity() {
-        return city;
-    }
+    public String getCity() { return city; }
 
     public void setCity(String city) {
         this.city = city;

@@ -15,6 +15,8 @@ public class Plane implements Serializable {
     private int price;
     private Airport location;
     private Boolean available;
+    private FlightOrder currentlyAssignedOrder;
+    private Airport destination;
 
     public Plane(String brand, String model, int productionYear, int capacity, int range, Double costFactor, int price, Airport location, Boolean available) {
         this.brand = brand;
@@ -37,6 +39,13 @@ public class Plane implements Serializable {
         this.range = range;
         this.costFactor = costFactor;
         this.price = price;
+        available = true;
+    }
+
+    public String getAvailableToString()
+    {
+        if(available) return "Available";
+        else return "Not Available";
     }
 
     public String getBrand() {
@@ -106,4 +115,12 @@ public class Plane implements Serializable {
     public int getPrice() { return price; }
 
     public void setPrice(int price) { this.price = price; }
+
+    public Airport getDestination() {return destination;}
+
+    public void setDestination(Airport destination) {this.destination = destination;}
+
+    public FlightOrder getCurrentlyAssignedOrder() { return currentlyAssignedOrder; }
+
+    public void setCurrentlyAssignedOrder(FlightOrder currentlyAssignedOrder) { this.currentlyAssignedOrder = currentlyAssignedOrder; }
 }
