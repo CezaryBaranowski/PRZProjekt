@@ -1,8 +1,8 @@
 package Application;
 
+import API.Weather;
 import Model.FlightOrder;
 import Model.Plane;
-import com.sun.javafx.binding.StringConstant;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -36,13 +36,13 @@ public class Tab extends JPanel {
 
         //tabbedpane.removeAll();
         pane1 = makePanel("Panel1",1);
-        tabbedpane.addTab("OVERVIEW",pane1);
+        tabbedpane.addTab(Application.getActiveLanguagePack().getOverviewTab(),pane1);
 
         pane2 = makePanel("Panel2",2);
-        tabbedpane.addTab("PLANES",pane2);
+        tabbedpane.addTab(Application.getActiveLanguagePack().getPlanesTab(),pane2);
 
         pane3 = makePanel("Panel3",3);
-        tabbedpane.addTab("ORDERS",pane3);
+        tabbedpane.addTab(Application.getActiveLanguagePack().getOrdersTab(),pane3);
 
         frame.add(tabbedpane);
         //frame.pack();
@@ -82,13 +82,13 @@ public class Tab extends JPanel {
         panel.setLayout(new GridBagLayout());
         GridBagConstraints c1 = new GridBagConstraints();
 
-        JLabel titleLabel = new JLabel("OVERVIEW");
+        JLabel titleLabel = new JLabel(Application.getActiveLanguagePack().getOverviewLabel());
         titleLabel.setFont(new Font("Calibri",Font.PLAIN,40));
         titleLabel.setForeground(Color.GREEN);
         panel.add(titleLabel,c1);
 
 
-        JLabel boughtPlanesLabel = new JLabel("YOUR PLANES");
+        JLabel boughtPlanesLabel = new JLabel(Application.getActiveLanguagePack().getYourPlanesTab1());
         boughtPlanesLabel.setFont(new Font("Calibri",Font.PLAIN,28));
         boughtPlanesLabel.setForeground(Color.GREEN);
         c1.anchor = GridBagConstraints.NORTHWEST;
@@ -117,7 +117,7 @@ public class Tab extends JPanel {
         panel.add(scrollPane,c1);
 
 
-        JLabel acceptedOrdersLabel = new JLabel("ACCEPTED ORDERS");
+        JLabel acceptedOrdersLabel = new JLabel(Application.getActiveLanguagePack().getAcceptedOrdersTab1());
         acceptedOrdersLabel.setFont(new Font("Calibri",Font.PLAIN,28));
         acceptedOrdersLabel.setForeground(Color.GREEN);
         c1.anchor = GridBagConstraints.NORTHWEST;
@@ -141,7 +141,7 @@ public class Tab extends JPanel {
 
 
         JLabel dayLabel = new JLabel();
-        dayLabel.setText("DAY " + Simulation.getDay().toString());
+        dayLabel.setText(Application.getActiveLanguagePack().getDayLabel()+ " " + Simulation.getDay().toString());
         dayLabel.setFont(new Font("Calibri",Font.PLAIN,28));
         dayLabel.setForeground(Color.orange);
         c1.anchor = GridBagConstraints.NORTH;
@@ -152,7 +152,7 @@ public class Tab extends JPanel {
 
 
         JLabel balanceLabel = new JLabel();
-        balanceLabel.setText("BALANCE " + Simulation.getBalance().toString());
+        balanceLabel.setText(Application.getActiveLanguagePack().getBalanceLabel() + " " + Simulation.getBalance().toString());
         balanceLabel.setFont(new Font("Calibri",Font.PLAIN,32));
         c1.anchor = GridBagConstraints.NORTH;
         c1.gridy = 0;
@@ -161,13 +161,19 @@ public class Tab extends JPanel {
         panel.add(balanceLabel,c1);
 
 
-        JButton nextDayButton = new JButton("NEXT DAY");
+        JButton nextDayButton = new JButton(Application.getActiveLanguagePack().getNextDayButton());
         nextDayButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Simulation.dailyUpdate();
-
-                refreshView();
+                if(Simulation.getDay()==0 && Application.getAirports().size()>0) {
+                    Simulation.getInstance().runSimulation();
+                    refreshView();
+                }
+                else
+                {
+                    Simulation.dailyUpdate();
+                    refreshView();
+                }
             }
 
         });
@@ -189,14 +195,14 @@ public class Tab extends JPanel {
     {
         panel.setLayout(new GridBagLayout());
         GridBagConstraints c2 = new GridBagConstraints();
-        JLabel titleLabel = new JLabel("PLANES");
+        JLabel titleLabel = new JLabel(Application.getActiveLanguagePack().getPlanesLabel());
         titleLabel.setFont(new Font("Calibri",Font.PLAIN,40));
         titleLabel.setForeground(Color.CYAN);
         c2.anchor = GridBagConstraints.FIRST_LINE_START;
         panel.add(titleLabel,c2);
 
 
-        JLabel boughtPlanesLabel = new JLabel("YOUR PLANES");
+        JLabel boughtPlanesLabel = new JLabel(Application.getActiveLanguagePack().getYourPlanesTab2());
         boughtPlanesLabel.setFont(new Font("Calibri",Font.PLAIN,28));
         boughtPlanesLabel.setForeground(Color.GREEN);
         c2.anchor = GridBagConstraints.NORTHWEST;
@@ -229,7 +235,7 @@ public class Tab extends JPanel {
         panel.add(scrollPane,c2);
 
 
-        JLabel acceptedOrdersLabel = new JLabel("AVAILABLE PLANES");
+        JLabel acceptedOrdersLabel = new JLabel(Application.getActiveLanguagePack().getAvailablePlanesTab2());
         acceptedOrdersLabel.setFont(new Font("Calibri",Font.PLAIN,28));
         acceptedOrdersLabel.setForeground(Color.GREEN);
         c2.weighty = 6;
@@ -257,7 +263,7 @@ public class Tab extends JPanel {
 
 
         JLabel dayLabel = new JLabel();
-        dayLabel.setText("DAY " + Simulation.getDay().toString());
+        dayLabel.setText(Application.getActiveLanguagePack().getDayLabel()+ " " + Simulation.getDay().toString());
         dayLabel.setFont(new Font("Calibri",Font.PLAIN,28));
         dayLabel.setForeground(Color.orange);
         c2.anchor = GridBagConstraints.NORTH;
@@ -269,7 +275,7 @@ public class Tab extends JPanel {
 
 
         JLabel balanceLabel = new JLabel();
-        balanceLabel.setText("BALANCE " + Simulation.getBalance().toString());
+        balanceLabel.setText(Application.getActiveLanguagePack().getBalanceLabel()+ " " + Simulation.getBalance().toString());
         balanceLabel.setFont(new Font("Calibri",Font.PLAIN,32));
         c2.anchor = GridBagConstraints.NORTH;
         c2.gridy = 0;
@@ -279,13 +285,19 @@ public class Tab extends JPanel {
         panel.add(balanceLabel,c2);
 
 
-        JButton nextDayButton = new JButton("NEXT DAY");
+        JButton nextDayButton = new JButton(Application.getActiveLanguagePack().getNextDayButton());
         nextDayButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Simulation.dailyUpdate();
-
-                refreshView();
+                if(Simulation.getDay()==0 && Application.getAirports().size()>0) {
+                    Simulation.getInstance().runSimulation();
+                    refreshView();
+                }
+                else
+                {
+                    Simulation.dailyUpdate();
+                    refreshView();
+                }
             }
 
         });
@@ -299,14 +311,14 @@ public class Tab extends JPanel {
         panel.add(nextDayButton,c2);
 
 
-        JButton buyButton = new JButton("BUY");
+        JButton buyButton = new JButton(Application.getActiveLanguagePack().getBuyButton());
         c2.fill = GridBagConstraints.NONE;
         c2.anchor = GridBagConstraints.WEST;
         c2.gridheight = 1;
         c2.gridx = 0;
         c2.gridy = 1;
         c2.gridwidth = 1;
-        c2.insets = new Insets(160,260,0,0);
+        c2.insets = new Insets(160,290,0,0);
         buyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -330,14 +342,14 @@ public class Tab extends JPanel {
     {
         panel.setLayout(new GridBagLayout());
         GridBagConstraints c3 = new GridBagConstraints();
-        JLabel titleLabel = new JLabel("ORDERS");
+        JLabel titleLabel = new JLabel(Application.getActiveLanguagePack().getOrdersLabel());
         titleLabel.setFont(new Font("Calibri",Font.PLAIN,40));
         titleLabel.setForeground(Color.RED);
         c3.anchor = GridBagConstraints.FIRST_LINE_START;
         panel.add(titleLabel,c3);
 
 
-        JLabel boughtPlanesLabel = new JLabel("YOUR ORDERS");
+        JLabel boughtPlanesLabel = new JLabel(Application.getActiveLanguagePack().getYourOrdersTab3());
         boughtPlanesLabel.setFont(new Font("Calibri",Font.PLAIN,28));
         boughtPlanesLabel.setForeground(Color.RED);
         c3.anchor = GridBagConstraints.NORTHWEST;
@@ -370,7 +382,7 @@ public class Tab extends JPanel {
         panel.add(scrollPane,c3);
 
 
-        JLabel acceptedOrdersLabel = new JLabel("AVAILABLE ORDERS");
+        JLabel acceptedOrdersLabel = new JLabel(Application.getActiveLanguagePack().getAvailableOrdersTab3());
         acceptedOrdersLabel.setFont(new Font("Calibri",Font.PLAIN,28));
         acceptedOrdersLabel.setForeground(Color.RED);
         c3.anchor = GridBagConstraints.NORTHWEST;
@@ -394,7 +406,7 @@ public class Tab extends JPanel {
         panel.add(scrollPane2,c3);
 
 
-        JButton takeOrderButton = new JButton("TAKE");
+        JButton takeOrderButton = new JButton(Application.getActiveLanguagePack().getTakeButton());
         takeOrderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -410,7 +422,7 @@ public class Tab extends JPanel {
 
 
         JLabel dayLabel = new JLabel();
-        dayLabel.setText("DAY " + Simulation.getDay().toString());
+        dayLabel.setText(Application.getActiveLanguagePack().getDayLabel()+ " " + Simulation.getDay().toString());
         dayLabel.setFont(new Font("Calibri",Font.PLAIN,28));
         dayLabel.setForeground(Color.orange);
         c3.anchor = GridBagConstraints.NORTH;
@@ -422,7 +434,7 @@ public class Tab extends JPanel {
 
 
         JLabel balanceLabel = new JLabel();
-        balanceLabel.setText("BALANCE " + Simulation.getBalance().toString());
+        balanceLabel.setText(Application.getActiveLanguagePack().getBalanceLabel()+ " " + Simulation.getBalance().toString());
         balanceLabel.setFont(new Font("Calibri",Font.PLAIN,32));
         c3.anchor = GridBagConstraints.NORTH;
         c3.gridy = 0;
@@ -432,13 +444,19 @@ public class Tab extends JPanel {
         panel.add(balanceLabel,c3);
 
 
-        JButton nextDayButton = new JButton("NEXT DAY");
+        JButton nextDayButton = new JButton(Application.getActiveLanguagePack().getNextDayButton());
         nextDayButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Simulation.dailyUpdate();
-
-                refreshView();
+                if(Simulation.getDay()==0 && Application.getAirports().size()>0) {
+                    Simulation.getInstance().runSimulation();
+                    refreshView();
+                }
+                else
+                {
+                    Simulation.dailyUpdate();
+                    refreshView();
+                }
 
             }
 
@@ -465,7 +483,7 @@ public class Tab extends JPanel {
 
         JTextField idOrderField = new JTextField(3);
         idOrderField.setBackground(Color.yellow);
-        idOrderField.setText("Tu wpisz id zlecenia");
+        idOrderField.setText(Application.getActiveLanguagePack().getNumberOfOrderLabel());
         c3.anchor = GridBagConstraints.WEST;
         c3.fill = GridBagConstraints.HORIZONTAL;
         c3.gridy = 0;
@@ -477,7 +495,7 @@ public class Tab extends JPanel {
 
         JTextField idPlaneField = new JTextField(3);
         idPlaneField.setBackground(Color.orange);
-        idPlaneField.setText("Tu wpisz id samolotu");
+        idPlaneField.setText(Application.getActiveLanguagePack().getNumberOfPlaneLabel());
         c3.anchor = GridBagConstraints.WEST;
         c3.fill = GridBagConstraints.HORIZONTAL;
         c3.gridy = 0;
@@ -487,7 +505,7 @@ public class Tab extends JPanel {
         c3.insets = new Insets(0,260,300,50);
         panel.add(idPlaneField,c3);
 
-        JButton assignmentButton = new JButton("ASSIGN ORDER");
+        JButton assignmentButton = new JButton(Application.getActiveLanguagePack().getAssignButton());
         assignmentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -499,6 +517,14 @@ public class Tab extends JPanel {
                 {
                     planeToAssign.setAvailable(false);
                     planeToAssign.setCurrentlyAssignedOrder(orderToAssign);
+                    SwingWorker worker = new SwingWorker() {
+                        @Override
+                        protected Object doInBackground() throws Exception {
+                            orderToAssign.setExpectedDestinationConditions(Weather.getConditions(orderToAssign.getDestination().getCity()));
+                            return null;
+                        }
+                    };
+                    worker.execute();
 
                     refreshView();
                 }

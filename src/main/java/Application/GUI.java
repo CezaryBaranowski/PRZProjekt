@@ -5,9 +5,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class GUI {
 
@@ -18,6 +15,7 @@ public class GUI {
         frame = new JFrame("Aplikancja");
         frame.pack();
         frame.setSize(1280, 720);
+        frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -31,22 +29,22 @@ public class GUI {
         JMenuBar menubar = new JMenuBar();
         //ImageIcon icon = new ImageIcon("exit.png");
 
-        JMenu file = new JMenu("File");
-        JMenu help = new JMenu("Help");
+        JMenu file = new JMenu(Application.getActiveLanguagePack().getMenuFile());
+        JMenu help = new JMenu(Application.getActiveLanguagePack().getMenuHelp());
         file.setMnemonic(KeyEvent.VK_F);
 
-        JMenuItem eMenuItem = new JMenuItem("Exit");
-        JMenuItem savegameMenuItem = new JMenuItem("Save Game");
-        JMenuItem newgameMenuItem = new JMenuItem("New Game");
+        JMenuItem eMenuItem = new JMenuItem(Application.getActiveLanguagePack().getMenuItemExit());
+     //   JMenuItem savegameMenuItem = new JMenuItem("Save Game");
+        JMenuItem newgameMenuItem = new JMenuItem(Application.getActiveLanguagePack().getMenuItemNewGame());
         eMenuItem.setMnemonic(KeyEvent.VK_E);
-        eMenuItem.setToolTipText("Exit application");
+        eMenuItem.setToolTipText(Application.getActiveLanguagePack().getMenuItemExit());
         eMenuItem.addActionListener((ActionEvent eventExit) -> {
             System.exit(0);
         });
         newgameMenuItem.addActionListener((ActionEvent eventNew)-> {frame.dispose(); Application.main(null);});
 
         file.add(newgameMenuItem);
-        file.add(savegameMenuItem);
+    //    file.add(savegameMenuItem);
         file.add(eMenuItem);
 
         menubar.add(file);

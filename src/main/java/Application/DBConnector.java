@@ -1,11 +1,10 @@
 package Application;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Vector;
 
 import Model.Airport;
@@ -43,26 +42,16 @@ public class DBConnector {
 
     public Connection getConnection() throws IOException, SQLException
     {
-        FileReader fileReader = new FileReader("properties");
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-        int n = 0;
-        String text = bufferedReader.readLine();
+        Properties properties = new Properties();
+        InputStream input = null;
+        input = new FileInputStream("properties");
 
-        do {
-            if (n == 0) {
-                provider = text;
-            } else if (n == 1) {
-                url = text;
-            } else if (n == 2) {
-                login = text;
-            } else if (n == 3) {
-                pass = text;
-            }
-            n++;
-            text = bufferedReader.readLine();
-        } while (text != null);
+        properties.load(input);
+        provider = properties.getProperty("driver");
+        url = properties.getProperty("adress");
+        login = properties.getProperty("user");
+        pass = properties.getProperty("password");
 
-        bufferedReader.close();
         System.out.println("Połaczone");
         return DriverManager.getConnection(url, login, pass);
 

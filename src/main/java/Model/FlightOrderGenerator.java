@@ -66,7 +66,6 @@ public class FlightOrderGenerator {
         drawnNumber = rand.nextInt(310) + 90;                // generuj liczbe pasazerow
         amountOfPassengers = drawnNumber;
         distance = calculateDistance(Double.parseDouble(from.getLatitude()),Double.parseDouble(from.getLongtitude()),Double.parseDouble(destination.getLatitude()),Double.parseDouble(destination.getLongtitude()),'K');
-
         FlightOrder newOrder = new FlightOrder(from,destination,daysToExpiration,amountOfPassengers,prize,penalty,distance);
         availableFlightOrders.add(newOrder);
         return newOrder;

@@ -1,11 +1,17 @@
 package Application;
 
+import Language.Language;
 import Model.Airport;
 import Model.FlightOrder;
 import Model.Plane;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -19,6 +25,14 @@ public class Application {
     private static Vector <String> ordersHeaders;
     private Simulation sim;
 
+    private static final String pathLanguageEN = "src/main/resources/dictionary/languageEN.xml";
+    private static final String pathLanguagePL = "src/main/resources/dictionary/languagePL.xml";;
+
+    private static Language languageEN;
+    private static Language languagePL;
+
+    private static Language activeLanguagePack;
+
     public Application() {
 
         airports = new ArrayList<Airport>();
@@ -26,11 +40,9 @@ public class Application {
         airportHeaders = new Vector<String>();
         planeHeaders = new Vector<String>();
         ordersHeaders = new Vector<String>();
-        try {
-            readDataFromDatabase();
-        }
-        catch (IOException e){e.printStackTrace();}
-        catch (SQLException se ){se.printStackTrace();}
+
+        loadLanguagePackFromXml();
+        activeLanguagePack = languagePL;
 
         sim = Simulation.getInstance();
         sim.runSimulation();
@@ -40,6 +52,15 @@ public class Application {
             gui.initUI();
         });
 
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                readDataFromDatabase();
+                return null;
+            }
+        };
+        worker.execute();
+
     }
 
     public static void main(String[] args) {
@@ -48,22 +69,6 @@ public class Application {
     }
 
     public void readDataFromDatabase() throws IOException, SQLException {
-   /*     SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-            @Override
-            protected Void doInBackground() throws Exception {
-                DBConnector dbc = new DBConnector();
-                airports =  dbc.getAirportData();
-                planes = dbc.getPlaneData();
-                setAirportHeaders();
-                setPlaneHeaders();
-                sim = Simulation.getInstance();
-                sim.runSimulation();
-
-                return null;
-            }
-        };
-
-        worker.execute();*/
 
         DBConnector dbc = new DBConnector();
         airports =  dbc.getAirportData();
@@ -78,9 +83,11 @@ public class Application {
 
     }
 
-    public static ArrayList<Airport> getAirports() {
-        return airports;
-    }
+    public static Language getActiveLanguagePack() { return activeLanguagePack; }
+
+    public static void setActiveLanguagePack(Language activeLanguagePack) { Application.activeLanguagePack = activeLanguagePack; }
+
+    public static ArrayList<Airport> getAirports() { return airports; }
 
     public static ArrayList<Plane> getPlanes() { return planes; }
 
@@ -97,29 +104,29 @@ public class Application {
 
     public static Void setPlaneHeaders()
     {
-        planeHeaders.addElement("number");
-        planeHeaders.addElement("brand");
-        planeHeaders.addElement("model");
-        planeHeaders.addElement("range");
-        planeHeaders.addElement("location");
-        planeHeaders.addElement("capacity");
-        planeHeaders.addElement("prodyear");
-        planeHeaders.addElement("costfactor");
-        planeHeaders.addElement("price");
-        planeHeaders.addElement("available");
+        planeHeaders.addElement(activeLanguagePack.getNumberOfPlane());
+        planeHeaders.addElement(activeLanguagePack.getBrand());
+        planeHeaders.addElement(activeLanguagePack.getModel());
+        planeHeaders.addElement(activeLanguagePack.getRange());
+        planeHeaders.addElement(activeLanguagePack.getLocation());
+        planeHeaders.addElement(activeLanguagePack.getCapacity());
+        planeHeaders.addElement(activeLanguagePack.getProdyear());
+        planeHeaders.addElement(activeLanguagePack.getCostfactor());
+        planeHeaders.addElement(activeLanguagePack.getPrice());
+        planeHeaders.addElement(activeLanguagePack.getAvailable());
         return null;
     }
 
     public static Void setOrderHeaders()
     {
-        ordersHeaders.addElement("number");
-        ordersHeaders.addElement("from");
-        ordersHeaders.addElement("destination");
-        ordersHeaders.addElement("passengers");
-        ordersHeaders.addElement("distance");
-        ordersHeaders.addElement("prize");
-        ordersHeaders.addElement("penalty");
-        ordersHeaders.addElement("daystoexpire");
+        ordersHeaders.addElement(activeLanguagePack.getNumberOfOrder());
+        ordersHeaders.addElement(activeLanguagePack.getFrom());
+        ordersHeaders.addElement(activeLanguagePack.getDestination());
+        ordersHeaders.addElement(activeLanguagePack.getPassengers());
+        ordersHeaders.addElement(activeLanguagePack.getDistance());
+        ordersHeaders.addElement(activeLanguagePack.getPrize());
+        ordersHeaders.addElement(activeLanguagePack.getPenalty());
+        ordersHeaders.addElement(activeLanguagePack.getDaysToExpire());
         return null;
     }
 
@@ -194,6 +201,42 @@ public class Application {
             i++;
         }
         return data;
+    }
+
+
+    public void loadLanguagePackFromXml() {
+
+        XmlMapper mapper = new XmlMapper();
+        byte[] xml = null;
+        try {
+            xml = Files.readAllBytes(Paths.get(pathLanguagePL));
+        }
+        catch (IOException ioe)
+        {
+            ioe.printStackTrace();
+        }
+        try {
+            languagePL = mapper.readValue(new String(xml, StandardCharsets.UTF_8), Language.class);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        try {
+            xml = Files.readAllBytes(Paths.get(pathLanguageEN));
+        }
+        catch (IOException ioe)
+        {
+            ioe.printStackTrace();
+        }
+        try {
+            languageEN = mapper.readValue(new String(xml, StandardCharsets.UTF_8), Language.class);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
 }

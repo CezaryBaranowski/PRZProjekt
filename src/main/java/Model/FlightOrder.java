@@ -12,6 +12,7 @@ public class FlightOrder implements Serializable {
     private int prize;
     private int penalty;
     private Double distance;
+    private String expectedDestinationConditions;
 
     public FlightOrder(Airport from, Airport destination, int daysToExpiration, int amountOfPassengers, int prize, int penalty, Double distance) {
         this.from = from;
@@ -76,4 +77,8 @@ public class FlightOrder implements Serializable {
     public void setDistance(Double distance) {
         this.distance = distance;
     }
+
+    public String getExpectedDestinationConditions() { return expectedDestinationConditions; }
+
+    public void setExpectedDestinationConditions(String expectedDestinationConditions) { this.expectedDestinationConditions = expectedDestinationConditions; }
 }

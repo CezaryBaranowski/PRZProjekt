@@ -14,7 +14,7 @@ public class Simulation {
     private static ArrayList<Plane> availablePlanes = new ArrayList<Plane>();
     private static ArrayList<FlightOrder> availableFlightOrders = new ArrayList<FlightOrder>();
     private static ArrayList<FlightOrder> takenFlightOrders = new ArrayList<FlightOrder>();
-    private static Airport startAirport = Application.getAirports().get(42);
+    private static Airport startAirport = new Airport();//Application.getAirports().get(42);
 
     private static Integer day;
 
@@ -23,7 +23,7 @@ public class Simulation {
     protected Simulation()
     {
         balance = 10000000;
-        day = 1;
+        day = 0;
     }
     public static Simulation getInstance()
     {
@@ -35,8 +35,12 @@ public class Simulation {
 
     public void runSimulation()
     {
-        generateStartOrders(startAirport);
-        generateStartPlanes();
+        if(Application.getAirports().size()==49) {
+            day = 1;
+            setStartAirport();
+            generateStartOrders(startAirport);
+            generateStartPlanes();
+        }
     }
 
     public static Integer getBalance() {
@@ -69,6 +73,11 @@ public class Simulation {
     public static ArrayList<FlightOrder> getTakenFlightOrders()
     {
         return takenFlightOrders;
+    }
+
+    public static void setStartAirport()
+    {
+        startAirport = Application.getAirports().get(42);
     }
 
     public static void generateStartPlanes()
