@@ -40,6 +40,7 @@ public class Simulation {
             setStartAirport();
             generateStartOrders(startAirport);
             generateStartPlanes();
+
         }
     }
 

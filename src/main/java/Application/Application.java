@@ -9,6 +9,8 @@ import Model.Airport;
 import Model.FlightOrder;
 import Model.Plane;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +26,8 @@ import java.util.Properties;
 import java.util.Vector;
 
 public class Application {
+
+    private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
     private static ArrayList<Airport> airports = new ArrayList<Airport>();
     private static ArrayList<Plane> planes = new ArrayList<Plane>();
@@ -45,24 +49,29 @@ public class Application {
 
         try {
             readProperties();
+            logger.info("Properties file loaded succesfully ");
         }
         catch(ReadPropertiesException rpe)
         {
             rpe.getMessage();
+            logger.error("Error while reading properties file");
         }
 
         try {
             loadLanguagePackFromXml();
+            logger.info("Language packs loaded succesfully ");
         }
         catch(XMLReadException | LanguageException le)
         {
             le.getMessage();
+            logger.error("Error while reading language packs");
         }
 
         activeLanguagePack = languagePL;
 
         sim = Simulation.getInstance();
         sim.runSimulation();
+        logger.info("Simulation started");
 
         EventQueue.invokeLater(() -> {
             GUI gui = new GUI();
@@ -74,10 +83,12 @@ public class Application {
             protected Void doInBackground() throws Exception {
                 try {
                     readDataFromDatabase();
+                    logger.info("Succesfully loaded data from database");
                 }
                 catch (InvalidDatabaseDataValueException ide)
                 {
                     System.out.println( ide.getMessage());
+                    logger.error("Database data read error");
                 }
                 return null;
             }
@@ -100,7 +111,7 @@ public class Application {
         }
         catch (IOException ioe)
         {
-            throw new ReadPropertiesException("Nie udalo sie poprawnie wczytac pliku properties");
+            throw new ReadPropertiesException("Error while loading properties file");
         }
     }
 
@@ -110,7 +121,7 @@ public class Application {
         airports =  dbc.getAirportData();
         planes = dbc.getPlaneData();
         if(!((airports.size()>0)&&(planes.size()>0)))
-        throw new InvalidDatabaseDataValueException("Nie udalo sie poprawnie wczytac wszystkich danych z bazy");
+        throw new InvalidDatabaseDataValueException("Failed to succesfully load all the data from database");
         setAirportHeaders();
         setPlaneHeaders();
         setOrderHeaders();
@@ -243,34 +254,41 @@ public class Application {
 
         XmlMapper mapper = new XmlMapper();
         byte[] xml = null;
-        try {
+        try
+        {
             xml = Files.readAllBytes(Paths.get(pathLanguagePL));
         }
         catch (IOException ioe)
         {
-            throw new XMLReadException("Blad wczytywania slownika z jezykime polskim");
+            throw new XMLReadException("Error while reading dictionary with polish language");
         }
-        try {
+        try
+        {
             languagePL = mapper.readValue(new String(xml, StandardCharsets.UTF_8), Language.class);
+            logger.info("Polish pack loaded");
         }
         catch (Exception e)
         {
-            throw new LanguageException("Blad parsowania pakietu z jezykiem polskim");
+            logger.error("Error while parsing dictionary of polish language");
+            throw new LanguageException("Error while parsing dictionary of polish language");
         }
-
-        try {
+        try
+        {
             xml = Files.readAllBytes(Paths.get(pathLanguageEN));
         }
         catch (IOException ioe)
         {
-            throw new XMLReadException("Blad wczytywania slownika z jezykiem angielskim");
+            throw new XMLReadException("Error while reading dictionary with english language");
         }
-        try {
+        try
+        {
             languageEN = mapper.readValue(new String(xml, StandardCharsets.UTF_8), Language.class);
+            logger.info("English pack loaded");
         }
         catch (Exception e)
         {
-            throw new LanguageException("Blad parsowania pakietu z jezykiem angielskim");
+            logger.error("Error while parsing dictionary of english language");
+            throw new LanguageException("Error while parsing dictionary of english language");
         }
     }
 
@@ -279,6 +297,7 @@ public class Application {
         if(getActiveLanguagePack().equals(languageEN))
             setActiveLanguagePack(languagePL);
         else setActiveLanguagePack(languageEN);
+        logger.info("Changed language pack");
     }
 
 }

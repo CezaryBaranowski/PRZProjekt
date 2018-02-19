@@ -1,7 +1,5 @@
 package Application;
 
-import javax.imageio.ImageIO;
-import javax.management.JMException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
