@@ -30,6 +30,7 @@ public class GUI {
         JMenu file = new JMenu(Application.getActiveLanguagePack().getMenuFile());
         JMenu lang = new JMenu(Application.getActiveLanguagePack().getMenuLang());
         JMenu help = new JMenu(Application.getActiveLanguagePack().getMenuHelp());
+        JMenu nextDay = new JMenu(Application.getActiveLanguagePack().getNextDayButton());
         file.setMnemonic(KeyEvent.VK_F);
 
         JMenuItem eMenuItem = new JMenuItem(Application.getActiveLanguagePack().getMenuItemExit());
@@ -51,10 +52,12 @@ public class GUI {
         file.add(eMenuItem);
         lang.add(langEnMenuItem);
         lang.add(langPlMenuItem);
+        nextDay.add(new ActionNextDay(Application.getActiveLanguagePack().getNextDayButton()));
 
         menubar.add(file);
         menubar.add(lang);
         menubar.add(help);
+        menubar.add(nextDay);
 
         frame.setJMenuBar(menubar);
     }

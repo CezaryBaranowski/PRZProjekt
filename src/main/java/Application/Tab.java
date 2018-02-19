@@ -161,7 +161,7 @@ public class Tab extends JPanel {
         panel.add(balanceLabel,c1);
 
 
-        JButton nextDayButton = new JButton(Application.getActiveLanguagePack().getNextDayButton());
+     /*   JButton nextDayButton = new JButton(Application.getActiveLanguagePack().getNextDayButton());
         nextDayButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -176,7 +176,10 @@ public class Tab extends JPanel {
                 }
             }
 
-        });
+        });*/
+
+        ActionNextDay nextDayAction = new ActionNextDay(Application.getActiveLanguagePack().getNextDayButton());
+        JButton nextDayButton = new JButton(nextDayAction);
 
         c1.anchor = GridBagConstraints.SOUTHEAST;
         c1.gridy = 0;
@@ -285,7 +288,7 @@ public class Tab extends JPanel {
         panel.add(balanceLabel,c2);
 
 
-        JButton nextDayButton = new JButton(Application.getActiveLanguagePack().getNextDayButton());
+     /*   JButton nextDayButton = new JButton(Application.getActiveLanguagePack().getNextDayButton());
         nextDayButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -300,7 +303,10 @@ public class Tab extends JPanel {
                 }
             }
 
-        });
+        });*/
+
+        ActionNextDay nextDayAction = new ActionNextDay(Application.getActiveLanguagePack().getNextDayButton());
+        JButton nextDayButton = new JButton(nextDayAction);
 
         c2.anchor = GridBagConstraints.NORTHEAST;
         c2.gridy = 0;
@@ -444,7 +450,7 @@ public class Tab extends JPanel {
         panel.add(balanceLabel,c3);
 
 
-        JButton nextDayButton = new JButton(Application.getActiveLanguagePack().getNextDayButton());
+      /*  JButton nextDayButton = new JButton(Application.getActiveLanguagePack().getNextDayButton());
         nextDayButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -460,7 +466,10 @@ public class Tab extends JPanel {
 
             }
 
-        });
+        });*/
+
+        ActionNextDay actionNextDay = new ActionNextDay(Application.getActiveLanguagePack().getNextDayButton());
+        JButton nextDayButton = new JButton(actionNextDay);
 
         c3.anchor = GridBagConstraints.NORTHEAST;
         c3.gridy = 0;
