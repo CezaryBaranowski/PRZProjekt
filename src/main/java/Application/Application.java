@@ -1,5 +1,9 @@
 package Application;
 
+import Exceptions.InvalidDatabaseDataValueException;
+import Exceptions.LanguageException;
+import Exceptions.ReadPropertiesException;
+import Exceptions.XMLReadException;
 import Language.Language;
 import Model.Airport;
 import Model.FlightOrder;
@@ -8,23 +12,27 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Vector;
 
 public class Application {
 
-    private static ArrayList<Airport> airports;
-    private static ArrayList<Plane> planes;
-    private static Vector <String> airportHeaders;
-    private static Vector <String> planeHeaders;
-    private static Vector <String> ordersHeaders;
+    private static ArrayList<Airport> airports = new ArrayList<Airport>();
+    private static ArrayList<Plane> planes = new ArrayList<Plane>();
+    private static Vector <String> airportHeaders = new Vector<String>();
+    private static Vector <String> planeHeaders = new Vector<String>();
+    private static Vector <String> ordersHeaders = new Vector<String>();
     private Simulation sim;
 
+    private static Properties properties = new Properties();
     private static final String pathLanguageEN = "src/main/resources/dictionary/languageEN.xml";
     private static final String pathLanguagePL = "src/main/resources/dictionary/languagePL.xml";;
 
@@ -35,13 +43,22 @@ public class Application {
 
     public Application() {
 
-        airports = new ArrayList<Airport>();
-        planes = new ArrayList<Plane>();
-        airportHeaders = new Vector<String>();
-        planeHeaders = new Vector<String>();
-        ordersHeaders = new Vector<String>();
+        try {
+            readProperties();
+        }
+        catch(ReadPropertiesException rpe)
+        {
+            rpe.getMessage();
+        }
 
-        loadLanguagePackFromXml();
+        try {
+            loadLanguagePackFromXml();
+        }
+        catch(XMLReadException | LanguageException le)
+        {
+            le.getMessage();
+        }
+
         activeLanguagePack = languagePL;
 
         sim = Simulation.getInstance();
@@ -55,7 +72,13 @@ public class Application {
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                readDataFromDatabase();
+                try {
+                    readDataFromDatabase();
+                }
+                catch (InvalidDatabaseDataValueException ide)
+                {
+                    System.out.println( ide.getMessage());
+                }
                 return null;
             }
         };
@@ -68,20 +91,32 @@ public class Application {
         Application app = new Application();
     }
 
-    public void readDataFromDatabase() throws IOException, SQLException {
+    public void readProperties() throws ReadPropertiesException
+    {
+        try {
+            InputStream input = null;
+            input = new FileInputStream("properties");
+            properties.load(input);
+        }
+        catch (IOException ioe)
+        {
+            throw new ReadPropertiesException("Nie udalo sie poprawnie wczytac pliku properties");
+        }
+    }
+
+    public void readDataFromDatabase() throws IOException, SQLException, InvalidDatabaseDataValueException {
 
         DBConnector dbc = new DBConnector();
         airports =  dbc.getAirportData();
         planes = dbc.getPlaneData();
+        if(!((airports.size()>0)&&(planes.size()>0)))
+        throw new InvalidDatabaseDataValueException("Nie udalo sie poprawnie wczytac wszystkich danych z bazy");
         setAirportHeaders();
         setPlaneHeaders();
         setOrderHeaders();
 
- /*       try {
-            Thread.sleep(3000);
-        } catch (InterruptedException ignore) {}*/
-
     }
+    public static Properties getProperties() { return properties; }
 
     public static Language getActiveLanguagePack() { return activeLanguagePack; }
 
@@ -204,7 +239,7 @@ public class Application {
     }
 
 
-    public void loadLanguagePackFromXml() {
+    public void loadLanguagePackFromXml() throws XMLReadException, LanguageException {
 
         XmlMapper mapper = new XmlMapper();
         byte[] xml = null;
@@ -213,14 +248,14 @@ public class Application {
         }
         catch (IOException ioe)
         {
-            ioe.printStackTrace();
+            throw new XMLReadException("Blad wczytywania slownika z jezykime polskim");
         }
         try {
             languagePL = mapper.readValue(new String(xml, StandardCharsets.UTF_8), Language.class);
         }
-        catch (IOException e)
+        catch (Exception e)
         {
-            e.printStackTrace();
+            throw new LanguageException("Blad parsowania pakietu z jezykiem polskim");
         }
 
         try {
@@ -228,15 +263,22 @@ public class Application {
         }
         catch (IOException ioe)
         {
-            ioe.printStackTrace();
+            throw new XMLReadException("Blad wczytywania slownika z jezykiem angielskim");
         }
         try {
             languageEN = mapper.readValue(new String(xml, StandardCharsets.UTF_8), Language.class);
         }
-        catch (IOException e)
+        catch (Exception e)
         {
-            e.printStackTrace();
+            throw new LanguageException("Blad parsowania pakietu z jezykiem angielskim");
         }
+    }
+
+    public static void changeActiveLanguagePack()
+    {
+        if(getActiveLanguagePack().equals(languageEN))
+            setActiveLanguagePack(languagePL);
+        else setActiveLanguagePack(languageEN);
     }
 
 }

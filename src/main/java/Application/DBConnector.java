@@ -42,15 +42,10 @@ public class DBConnector {
 
     public Connection getConnection() throws IOException, SQLException
     {
-        Properties properties = new Properties();
-        InputStream input = null;
-        input = new FileInputStream("properties");
-
-        properties.load(input);
-        provider = properties.getProperty("driver");
-        url = properties.getProperty("adress");
-        login = properties.getProperty("user");
-        pass = properties.getProperty("password");
+        provider = Application.getProperties().getProperty("driver");
+        url = Application.getProperties().getProperty("adress");
+        login = Application.getProperties().getProperty("user");
+        pass = Application.getProperties().getProperty("password");
 
         System.out.println("Połaczone");
         return DriverManager.getConnection(url, login, pass);

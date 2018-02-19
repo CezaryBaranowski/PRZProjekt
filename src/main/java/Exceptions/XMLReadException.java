@@ -2,7 +2,7 @@ package Exceptions;
 
 import java.io.IOException;
 
-public class LanguageException extends IOException {
+public class XMLReadException extends IOException {
 
     private String message;
 
@@ -11,7 +11,7 @@ public class LanguageException extends IOException {
         return message;
     }
 
-    public LanguageException(String message)
+    public XMLReadException(String message)
     {
         this.message = message;
     }

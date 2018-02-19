@@ -9,6 +9,10 @@ import java.util.Vector;
 public class Language {
 
     @JacksonXmlProperty
+    private String langCode;
+    @JacksonXmlProperty
+    private String menuLang;
+    @JacksonXmlProperty
     private String model;
     @JacksonXmlProperty
     private String availableYes;

@@ -33,6 +33,7 @@ public class Tab extends JPanel {
     public static void createTabs(JFrame frame)
     {
         //JTabbedPane tabbedpane = new JTabbedPane();
+        tabbedpane.removeAll();
 
         //tabbedpane.removeAll();
         pane1 = makePanel("Panel1",1);
@@ -548,6 +549,17 @@ public class Tab extends JPanel {
         arrangepanel1(pane1);
         arrangepanel2(pane2);
         arrangepanel3(pane3);
+
+    }
+
+    public static void refreshViewAfterChangeLanguage()
+    {
+        pane1.removeAll();
+        pane2.removeAll();
+        pane3.removeAll();
+
+        createTabs(framee);
+
     }
 
     public static class BackgroundPane extends JPanel {
