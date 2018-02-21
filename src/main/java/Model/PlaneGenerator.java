@@ -41,9 +41,7 @@ public class PlaneGenerator {
         available = true;
         price = Application.getPlanes().get(drawnNumber).getPrice();
 
-        //teraz drawnnumber to wiek samolotu
         drawnNumber = rand.nextInt(Application.getPlanes().get(drawnNumber).getProducedTo() - Application.getPlanes().get(drawnNumber).getProducedFrom());
-       // productionYear = drawnNumber + Application.getPlanes().get(drawnNumber).getProducedFrom();
         productionYear = Calendar.getInstance().get(Calendar.YEAR) - drawnNumber;
         // 2% wartosci co rok
         double percentValue = 1.0 - (drawnNumber * 0.02);

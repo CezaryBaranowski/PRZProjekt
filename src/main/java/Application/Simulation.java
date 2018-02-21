@@ -6,17 +6,16 @@ import Model.*;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
-// Singleton
 public class Simulation {
 
-    private static Integer balance;
-    private static ArrayList<Plane> boughtPlanes = new ArrayList<Plane>();
-    private static ArrayList<Plane> availablePlanes = new ArrayList<Plane>();
-    private static ArrayList<FlightOrder> availableFlightOrders = new ArrayList<FlightOrder>();
-    private static ArrayList<FlightOrder> takenFlightOrders = new ArrayList<FlightOrder>();
-    private static Airport startAirport = new Airport();//Application.getAirports().get(42);
+    private Integer balance;
+    private ArrayList<Plane> boughtPlanes = new ArrayList<Plane>();
+    private ArrayList<Plane> availablePlanes = new ArrayList<Plane>();
+    private ArrayList<FlightOrder> availableFlightOrders = new ArrayList<FlightOrder>();
+    private ArrayList<FlightOrder> takenFlightOrders = new ArrayList<FlightOrder>();
+    private Airport startAirport = new Airport();//Application.getAirports().get(42);
 
-    private static Integer day;
+    private Integer day;
 
     private static Simulation simulation = null;
 
@@ -44,44 +43,44 @@ public class Simulation {
         }
     }
 
-    public static Integer getBalance() {
+    public Integer getBalance() {
         return balance;
     }
 
-    public static void setBalance(Integer bal) {
+    public void setBalance(Integer bal) {
         balance = bal;
     }
 
-    public static Integer getDay() { return day; }
+    public Integer getDay() { return day; }
 
-    public static void setDay(Integer day) { Simulation.day = day; }
+    public void setDay(Integer day) { Simulation.getInstance().day = day; }
 
-    public static ArrayList<FlightOrder> getAvailableFlightOrders()
+    public ArrayList<FlightOrder> getAvailableFlightOrders()
     {
         return availableFlightOrders;
     }
 
-    public static ArrayList<Plane> getAvailablePlanes()
+    public ArrayList<Plane> getAvailablePlanes()
     {
         return availablePlanes;
     }
 
-    public static ArrayList<Plane> getBoughtPlanes()
+    public ArrayList<Plane> getBoughtPlanes()
     {
         return boughtPlanes;
     }
 
-    public static ArrayList<FlightOrder> getTakenFlightOrders()
+    public ArrayList<FlightOrder> getTakenFlightOrders()
     {
         return takenFlightOrders;
     }
 
-    public static void setStartAirport()
+    public void setStartAirport()
     {
         startAirport = Application.getAirports().get(42);
     }
 
-    public static void generateStartPlanes()
+    public void generateStartPlanes()
     {
        boughtPlanes.add(PlaneGenerator.generatePlane());
        boughtPlanes.add(PlaneGenerator.generatePlane());
@@ -89,7 +88,7 @@ public class Simulation {
        availablePlanes.add((PlaneGenerator.generatePlane()));
     }
 
-    public static void generateStartOrders(Airport ap)
+    public void generateStartOrders(Airport ap)
     {
         availableFlightOrders.add(FlightOrderGenerator.generateOrder(ap));
         availableFlightOrders.add(FlightOrderGenerator.generateOrder(ap));
@@ -98,7 +97,7 @@ public class Simulation {
         availableFlightOrders.add(FlightOrderGenerator.generateOrder());
     }
 
-    public static void dailyUpdate()
+    public void dailyUpdate()
     {
         day++;
         updateDailyAvailableOrders();
@@ -106,7 +105,7 @@ public class Simulation {
         updateDailyTakenOrders();
     }
 
-    public static void updateDailyAvailableOrders()
+    public void updateDailyAvailableOrders()
     {
         for(FlightOrder fo : availableFlightOrders)
         {
@@ -125,7 +124,7 @@ public class Simulation {
         availableFlightOrders.add(FlightOrderGenerator.generateOrder());
     }
 
-    public static void updateDailyTakenOrders()
+    public void updateDailyTakenOrders()
     {
         for(FlightOrder fo : takenFlightOrders)
         {
@@ -135,7 +134,7 @@ public class Simulation {
             @Override
             public boolean test(FlightOrder flightOrder) {
                 if(flightOrder.getDaysToExpiration()<1) {
-                    Simulation.setBalance(Simulation.getBalance() - flightOrder.getPenalty());
+                    Simulation.getInstance().setBalance(Simulation.getInstance().getBalance() - flightOrder.getPenalty());
                     return true;
                 }
                 else return false;
@@ -144,7 +143,7 @@ public class Simulation {
 
     }
 
-    public static void updateDailyAvailablePlanes()
+    public void updateDailyAvailablePlanes()
     {
         availablePlanes.add(PlaneGenerator.generatePlane());
 
@@ -156,9 +155,9 @@ public class Simulation {
                 p.setLocation(p.getCurrentlyAssignedOrder().getFrom());
                 else {
                     p.setLocation(p.getCurrentlyAssignedOrder().getDestination());
-                    Simulation.balance += p.getCurrentlyAssignedOrder().getPrize();
-                    Simulation.balance -= calculateFlyCost(p.getCurrentlyAssignedOrder(),p.getCostFactor());
-                    Simulation.takenFlightOrders.remove(p.getCurrentlyAssignedOrder());
+                    Simulation.getInstance().balance += p.getCurrentlyAssignedOrder().getPrize();
+                    Simulation.getInstance().balance -= calculateFlyCost(p.getCurrentlyAssignedOrder(),p.getCostFactor());
+                    Simulation.getInstance().takenFlightOrders.remove(p.getCurrentlyAssignedOrder());
                     p.setCurrentlyAssignedOrder(null);
                     p.setAvailable(true);
                 }

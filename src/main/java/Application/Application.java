@@ -55,6 +55,7 @@ public class Application {
         catch(ReadPropertiesException | BadFrameSizeException rpe)
         {
             System.out.println(rpe.getMessage());
+            rpe.printStackTrace();
             logger.error("Error while reading properties file");
         }
 
@@ -103,19 +104,6 @@ public class Application {
         Application app = new Application();
     }
 
-    public void readProperties() throws ReadPropertiesException
-    {
-        try {
-            InputStream input = null;
-            input = new FileInputStream("properties");
-            properties.load(input);
-        }
-        catch (IOException ioe)
-        {
-            throw new ReadPropertiesException("Error while loading properties file");
-        }
-    }
-
     public void readDataFromDatabase() throws IOException, SQLException, InvalidDatabaseDataValueException {
 
         DBConnector dbc = new DBConnector();
@@ -137,6 +125,18 @@ public class Application {
     public static ArrayList<Airport> getAirports() { return airports; }
 
     public static ArrayList<Plane> getPlanes() { return planes; }
+
+    public static Vector<String> getAirportHeaders()
+    {
+        return airportHeaders;
+    }
+
+    public static Vector<String> getPlaneHeaders()
+    {
+        return planeHeaders;
+    }
+
+    public static Vector<String> getOrdersHeaders() { return ordersHeaders; }
 
     public static Void setAirportHeaders()
     {
@@ -176,18 +176,6 @@ public class Application {
         ordersHeaders.addElement(activeLanguagePack.getDaysToExpire());
         return null;
     }
-
-    public static Vector<String> getAirportHeaders()
-    {
-        return airportHeaders;
-    }
-
-    public static Vector<String> getPlaneHeaders()
-    {
-        return planeHeaders;
-    }
-
-    public static Vector<String> getOrdersHeaders() { return ordersHeaders; }
 
     public static Vector getAirportsVectors()
     {
@@ -250,6 +238,18 @@ public class Application {
         return data;
     }
 
+    public void readProperties() throws ReadPropertiesException
+    {
+        try {
+            InputStream input = null;
+            input = new FileInputStream("properties");
+            properties.load(input);
+        }
+        catch (IOException ioe)
+        {
+            throw new ReadPropertiesException("Error while loading properties file");
+        }
+    }
 
     public void loadLanguagePackFromXml() throws XMLReadException, LanguageException {
 

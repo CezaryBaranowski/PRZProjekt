@@ -9,6 +9,7 @@ public class GUI {
 
     private JFrame frame;
     private int currentSkin;
+    private Tab tab;
 
     public void initUI() {
 
@@ -37,7 +38,6 @@ public class GUI {
         file.setMnemonic(KeyEvent.VK_F);
 
         JMenuItem eMenuItem = new JMenuItem(Application.getActiveLanguagePack().getMenuItemExit());
-     //   JMenuItem savegameMenuItem = new JMenuItem("Save Game");
         JMenuItem newgameMenuItem = new JMenuItem(Application.getActiveLanguagePack().getMenuItemNewGame());
         JMenuItem langPlMenuItem = new JMenuItem(Application.getActiveLanguagePack().getLangPL());
         JMenuItem langEnMenuItem = new JMenuItem(Application.getActiveLanguagePack().getLangEN());
@@ -57,11 +57,10 @@ public class GUI {
         skin3MenuItem.addActionListener((ActionEvent eventSkin)->{if(currentSkin!=3)changeSkin(3);});
 
         file.add(newgameMenuItem);
-    //    file.add(savegameMenuItem);
         file.add(eMenuItem);
         lang.add(langEnMenuItem);
         lang.add(langPlMenuItem);
-        nextDay.add(new ActionNextDay(Application.getActiveLanguagePack().getNextDayButton()));
+        nextDay.add(new ActionNextDay(Application.getActiveLanguagePack().getNextDayButton(),tab));
         plaf.add(skin1MenuItem);
         plaf.add(skin2MenuItem);
         plaf.add(skin3MenuItem);
@@ -80,7 +79,7 @@ public class GUI {
         if(!Application.getActiveLanguagePack().getLangCode().equals(langCode)) {
             Application.changeActiveLanguagePack();
             createMenuBar();
-            Tab.refreshViewAfterChangeLanguage();
+            tab.refreshViewAfterChangeLanguage();
         }
     }
 
@@ -97,7 +96,6 @@ public class GUI {
                 e.printStackTrace();
             }
         }
-
         if(skin == 2)
         {
             try {
@@ -109,7 +107,6 @@ public class GUI {
                 e.printStackTrace();
             }
         }
-
         if(skin == 3)
         {
             try {

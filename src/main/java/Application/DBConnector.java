@@ -3,9 +3,6 @@ package Application;
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import Model.Airport;
 import Model.Plane;
@@ -24,19 +21,17 @@ public class DBConnector {
         try
         {
             connection = getConnection();
-            List<Airport> ap = getAirportData();
+
+           /* List<Airport> ap = getAirportData();
             for(Airport a: ap)
             {
                 System.out.println(a.toString());
-            }
+            }*/
         }
-        catch (IOException e)
+        catch (IOException | SQLException e)
         {
             e.printStackTrace();
-        }
-        catch(SQLException se)
-        {
-            se.printStackTrace();
+            System.out.println("Database connection problem");
         }
     }
 

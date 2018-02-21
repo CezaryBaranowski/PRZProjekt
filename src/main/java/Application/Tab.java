@@ -16,20 +16,20 @@ import java.io.IOException;
 
 public class Tab extends JPanel {
 
-    private static BufferedImage img;
-    private static JTabbedPane tabbedpane = new JTabbedPane();
-    private static JPanel pane1 = new JPanel();
-    private static JPanel pane2 = new JPanel();
-    private static JPanel pane3 = new JPanel();
-    private static JFrame framee;
+    private BufferedImage img;
+    private JTabbedPane tabbedpane = new JTabbedPane();
+    private JPanel pane1 = new JPanel();
+    private JPanel pane2 = new JPanel();
+    private JPanel pane3 = new JPanel();
+    private JFrame frame;
 
     public Tab(JFrame frame)
     {
-        framee = frame;
-        createTabs(framee);
+        this.frame = frame;
+        createTabs(frame);
     }
 
-    public static void createTabs(JFrame frame)
+    public void createTabs(JFrame frame)
     {
         //JTabbedPane tabbedpane = new JTabbedPane();
         tabbedpane.removeAll();
@@ -45,10 +45,9 @@ public class Tab extends JPanel {
         tabbedpane.addTab(Application.getActiveLanguagePack().getOrdersTab(),pane3);
 
         frame.add(tabbedpane);
-        //frame.pack();
     }
 
-    private static JPanel makePanel(String text, int tab) {
+    private JPanel makePanel(String text, int tab) {
         JPanel panel = new JPanel();
         String path = new String();
         BackgroundPane background = null;
@@ -77,7 +76,7 @@ public class Tab extends JPanel {
         return background;
     }
 
-    private static void arrangepanel1(JPanel panel)
+    private void arrangepanel1(JPanel panel)
     {
         panel.setLayout(new GridBagLayout());
         GridBagConstraints c1 = new GridBagConstraints();
@@ -100,10 +99,8 @@ public class Tab extends JPanel {
 
 
         JTable table = new JTable();
-        DefaultTableModel model = new DefaultTableModel(Application.getVectorsFromPlanes(Simulation.getBoughtPlanes()),Application.getPlaneHeaders());
-      //  table.setPreferredScrollableViewportSize(new Dimension(600,120));
+        DefaultTableModel model = new DefaultTableModel(Application.getVectorsFromPlanes(Simulation.getInstance().getBoughtPlanes()),Application.getPlaneHeaders());
         table.setGridColor(new Color(20,200,50));
-    //    table.setPreferredSize(new Dimension(800,250));
         table.setModel(model);
         c1.weightx = 2;
         c1.gridwidth = 3;
@@ -113,7 +110,6 @@ public class Tab extends JPanel {
         c1.insets = new Insets(0,20,0,0);
         c1.fill = GridBagConstraints.BOTH;
         JScrollPane scrollPane = new JScrollPane(table);
-      //  scrollPane.setPreferredSize(new Dimension(d.width,table.getRowHeight()*table.getRowCount()));
         panel.add(scrollPane,c1);
 
 
@@ -127,13 +123,11 @@ public class Tab extends JPanel {
 
 
         JTable table2 = new JTable();
-        DefaultTableModel model2 = new DefaultTableModel(Application.getVectorsFromOrders(Simulation.getTakenFlightOrders()),Application.getOrdersHeaders());
-       // table2.setPreferredScrollableViewportSize(new Dimension(600,120));
+        DefaultTableModel model2 = new DefaultTableModel(Application.getVectorsFromOrders(Simulation.getInstance().getTakenFlightOrders()),Application.getOrdersHeaders());
         table2.setGridColor(new Color(20,200,50));
         table2.setModel(model2);
         table2.setShowGrid(true);
         JScrollPane scrollPane2 = new JScrollPane(table2);
-  //      scrollPane2.setPreferredSize(new Dimension(d.width,table2.getRowHeight()*table2.getRowCount()+1));
         c1.anchor = GridBagConstraints.NORTHWEST;
         c1.gridy = 4;
         c1.insets = new Insets(0,20,20,0);
@@ -141,7 +135,7 @@ public class Tab extends JPanel {
 
 
         JLabel dayLabel = new JLabel();
-        dayLabel.setText(Application.getActiveLanguagePack().getDayLabel()+ " " + Simulation.getDay().toString());
+        dayLabel.setText(Application.getActiveLanguagePack().getDayLabel()+ " " + Simulation.getInstance().getDay().toString());
         dayLabel.setFont(new Font("Calibri",Font.PLAIN,28));
         dayLabel.setForeground(Color.orange);
         c1.anchor = GridBagConstraints.NORTH;
@@ -152,7 +146,7 @@ public class Tab extends JPanel {
 
 
         JLabel balanceLabel = new JLabel();
-        balanceLabel.setText(Application.getActiveLanguagePack().getBalanceLabel() + " " + Simulation.getBalance().toString());
+        balanceLabel.setText(Application.getActiveLanguagePack().getBalanceLabel() + " " + Simulation.getInstance().getBalance().toString());
         balanceLabel.setFont(new Font("Calibri",Font.PLAIN,32));
         c1.anchor = GridBagConstraints.NORTH;
         c1.gridy = 0;
@@ -160,25 +154,7 @@ public class Tab extends JPanel {
         c1.insets = new Insets(0,0,0,20);
         panel.add(balanceLabel,c1);
 
-
-     /*   JButton nextDayButton = new JButton(Application.getActiveLanguagePack().getNextDayButton());
-        nextDayButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(Simulation.getDay()==0 && Application.getAirports().size()>0) {
-                    Simulation.getInstance().runSimulation();
-                    refreshView();
-                }
-                else
-                {
-                    Simulation.dailyUpdate();
-                    refreshView();
-                }
-            }
-
-        });*/
-
-        ActionNextDay nextDayAction = new ActionNextDay(Application.getActiveLanguagePack().getNextDayButton());
+        ActionNextDay nextDayAction = new ActionNextDay(Application.getActiveLanguagePack().getNextDayButton(),this);
         JButton nextDayButton = new JButton(nextDayAction);
 
         c1.anchor = GridBagConstraints.SOUTHEAST;
@@ -194,7 +170,7 @@ public class Tab extends JPanel {
 
 
 
-    private static void arrangepanel2(JComponent panel)
+    private void arrangepanel2(JComponent panel)
     {
         panel.setLayout(new GridBagLayout());
         GridBagConstraints c2 = new GridBagConstraints();
@@ -213,15 +189,13 @@ public class Tab extends JPanel {
         c2.weightx = 2;
         c2.gridy = 0;
         c2.gridx = 0;
-       // c2.gridwidth = 3;
         c2.fill = GridBagConstraints.VERTICAL;
         c2.insets = new Insets(120,20,0,0);
         panel.add(boughtPlanesLabel,c2);
 
 
         JTable table = new JTable();
-        DefaultTableModel model = new DefaultTableModel(Application.getVectorsFromPlanes(Simulation.getBoughtPlanes()),Application.getPlaneHeaders());
-        //  table.setPreferredScrollableViewportSize(new Dimension(600,120));
+        DefaultTableModel model = new DefaultTableModel(Application.getVectorsFromPlanes(Simulation.getInstance().getBoughtPlanes()),Application.getPlaneHeaders());
         table.setGridColor(new Color(20,200,50));
         table.setModel(model);
         c2.weighty = 6;
@@ -234,7 +208,6 @@ public class Tab extends JPanel {
         c2.fill = GridBagConstraints.BOTH;
         c2.insets = new Insets(0,20,120,0);
         JScrollPane scrollPane = new JScrollPane(table);
-        //scrollPane.setPreferredSize(new Dimension(d.width,table.getRowHeight()*table.getRowCount()+1));
         panel.add(scrollPane,c2);
 
 
@@ -251,7 +224,7 @@ public class Tab extends JPanel {
 
 
         JTable table2 = new JTable();
-        DefaultTableModel model2 = new DefaultTableModel(Application.getVectorsFromPlanes(Simulation.getAvailablePlanes()),Application.getPlaneHeaders());
+        DefaultTableModel model2 = new DefaultTableModel(Application.getVectorsFromPlanes(Simulation.getInstance().getAvailablePlanes()),Application.getPlaneHeaders());
         table2.setPreferredScrollableViewportSize(new Dimension(600,120));
         table2.setGridColor(new Color(20,200,50));
         table2.setModel(model2);
@@ -266,7 +239,7 @@ public class Tab extends JPanel {
 
 
         JLabel dayLabel = new JLabel();
-        dayLabel.setText(Application.getActiveLanguagePack().getDayLabel()+ " " + Simulation.getDay().toString());
+        dayLabel.setText(Application.getActiveLanguagePack().getDayLabel()+ " " + Simulation.getInstance().getDay().toString());
         dayLabel.setFont(new Font("Calibri",Font.PLAIN,28));
         dayLabel.setForeground(Color.orange);
         c2.anchor = GridBagConstraints.NORTH;
@@ -278,7 +251,7 @@ public class Tab extends JPanel {
 
 
         JLabel balanceLabel = new JLabel();
-        balanceLabel.setText(Application.getActiveLanguagePack().getBalanceLabel()+ " " + Simulation.getBalance().toString());
+        balanceLabel.setText(Application.getActiveLanguagePack().getBalanceLabel()+ " " + Simulation.getInstance().getBalance().toString());
         balanceLabel.setFont(new Font("Calibri",Font.PLAIN,32));
         c2.anchor = GridBagConstraints.NORTH;
         c2.gridy = 0;
@@ -287,25 +260,7 @@ public class Tab extends JPanel {
         c2.insets = new Insets(0,0,0,20);
         panel.add(balanceLabel,c2);
 
-
-     /*   JButton nextDayButton = new JButton(Application.getActiveLanguagePack().getNextDayButton());
-        nextDayButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(Simulation.getDay()==0 && Application.getAirports().size()>0) {
-                    Simulation.getInstance().runSimulation();
-                    refreshView();
-                }
-                else
-                {
-                    Simulation.dailyUpdate();
-                    refreshView();
-                }
-            }
-
-        });*/
-
-        ActionNextDay nextDayAction = new ActionNextDay(Application.getActiveLanguagePack().getNextDayButton());
+        ActionNextDay nextDayAction = new ActionNextDay(Application.getActiveLanguagePack().getNextDayButton(),this);
         JButton nextDayButton = new JButton(nextDayAction);
 
         c2.anchor = GridBagConstraints.NORTHEAST;
@@ -328,13 +283,19 @@ public class Tab extends JPanel {
         buyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Plane boughtPlane =  Simulation.getAvailablePlanes().get(table2.getSelectedRow());
-                if(Simulation.getBalance()>=boughtPlane.getPrice()) {
-                    Simulation.getBoughtPlanes().add(boughtPlane);
-                    Simulation.getAvailablePlanes().remove(boughtPlane);
-                    Simulation.setBalance(Simulation.getBalance() - boughtPlane.getPrice());
-                    refreshView();
+
+
+                if(table2.getSelectedRow()!=-1) {
+                    Plane boughtPlane =  Simulation.getInstance().getAvailablePlanes().get(table2.getSelectedRow());
+                    if (Simulation.getInstance().getBalance() >= boughtPlane.getPrice()) {
+                        Simulation.getInstance().getBoughtPlanes().add(boughtPlane);
+                        Simulation.getInstance().getAvailablePlanes().remove(boughtPlane);
+                        Simulation.getInstance().setBalance(Simulation.getInstance().getBalance() - boughtPlane.getPrice());
+                        refreshView();
+                    }
+                    else JOptionPane.showMessageDialog(frame,"You can not afford this plane");
                 }
+                else JOptionPane.showMessageDialog(frame,"Select one plane");
             }
         });
         panel.add(buyButton,c2);
@@ -344,7 +305,7 @@ public class Tab extends JPanel {
 
 
 
-    private static void arrangepanel3(JComponent panel)
+    private void arrangepanel3(JComponent panel)
     {
         panel.setLayout(new GridBagLayout());
         GridBagConstraints c3 = new GridBagConstraints();
@@ -370,8 +331,7 @@ public class Tab extends JPanel {
 
 
         JTable table = new JTable();
-        DefaultTableModel model = new DefaultTableModel(Application.getVectorsFromOrders(Simulation.getTakenFlightOrders()),Application.getOrdersHeaders());
-        //  table.setPreferredScrollableViewportSize(new Dimension(600,120));
+        DefaultTableModel model = new DefaultTableModel(Application.getVectorsFromOrders(Simulation.getInstance().getTakenFlightOrders()),Application.getOrdersHeaders());
         table.setGridColor(new Color(20,200,50));
         table.setModel(model);
         c3.weighty = 6;
@@ -384,7 +344,6 @@ public class Tab extends JPanel {
         c3.fill = GridBagConstraints.BOTH;
         c3.insets = new Insets(200,20,0,0);
         JScrollPane scrollPane = new JScrollPane(table);
-        //scrollPane.setPreferredSize(new Dimension(d.width,table.getRowHeight()*table.getRowCount()+1));
         panel.add(scrollPane,c3);
 
 
@@ -398,14 +357,13 @@ public class Tab extends JPanel {
 
 
         JTable table2 = new JTable();
-        DefaultTableModel model2 = new DefaultTableModel(Application.getVectorsFromOrders(Simulation.getAvailableFlightOrders()),Application.getOrdersHeaders());
+        DefaultTableModel model2 = new DefaultTableModel(Application.getVectorsFromOrders(Simulation.getInstance().getAvailableFlightOrders()),Application.getOrdersHeaders());
         table2.setPreferredScrollableViewportSize(new Dimension(600,120));
         table2.setGridColor(new Color(20,200,50));
         table2.setModel(model2);
         table2.setShowGrid(true);
         JScrollPane scrollPane2 = new JScrollPane(table2);
         scrollPane2.setPreferredSize(new Dimension(600,150));
-        //  scrollPane2.setPreferredSize(new Dimension(d.width,table2.getRowHeight()*table2.getRowCount()+1));
         c3.anchor = GridBagConstraints.NORTHWEST;
         c3.gridy = 1;
         c3.insets = new Insets(100,20,0,0);
@@ -416,11 +374,15 @@ public class Tab extends JPanel {
         takeOrderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                FlightOrder takenOrder =  Simulation.getAvailableFlightOrders().get(table2.getSelectedRow());
-                Simulation.getTakenFlightOrders().add(takenOrder);
-                Simulation.getAvailableFlightOrders().remove(takenOrder);
 
-                refreshView();
+                if(table2.getSelectedRow()!=-1) {
+                    FlightOrder takenOrder = Simulation.getInstance().getAvailableFlightOrders().get(table2.getSelectedRow());
+                    Simulation.getInstance().getTakenFlightOrders().add(takenOrder);
+                    Simulation.getInstance().getAvailableFlightOrders().remove(takenOrder);
+
+                    refreshView();
+                }
+                else JOptionPane.showMessageDialog(frame,"Select one order");
             }
         });
         c3.insets = new Insets(20,280,200,260);
@@ -428,7 +390,7 @@ public class Tab extends JPanel {
 
 
         JLabel dayLabel = new JLabel();
-        dayLabel.setText(Application.getActiveLanguagePack().getDayLabel()+ " " + Simulation.getDay().toString());
+        dayLabel.setText(Application.getActiveLanguagePack().getDayLabel()+ " " + Simulation.getInstance().getDay().toString());
         dayLabel.setFont(new Font("Calibri",Font.PLAIN,28));
         dayLabel.setForeground(Color.orange);
         c3.anchor = GridBagConstraints.NORTH;
@@ -440,7 +402,7 @@ public class Tab extends JPanel {
 
 
         JLabel balanceLabel = new JLabel();
-        balanceLabel.setText(Application.getActiveLanguagePack().getBalanceLabel()+ " " + Simulation.getBalance().toString());
+        balanceLabel.setText(Application.getActiveLanguagePack().getBalanceLabel()+ " " + Simulation.getInstance().getBalance().toString());
         balanceLabel.setFont(new Font("Calibri",Font.PLAIN,32));
         c3.anchor = GridBagConstraints.NORTH;
         c3.gridy = 0;
@@ -449,26 +411,7 @@ public class Tab extends JPanel {
         c3.insets = new Insets(0,0,50,20);
         panel.add(balanceLabel,c3);
 
-
-      /*  JButton nextDayButton = new JButton(Application.getActiveLanguagePack().getNextDayButton());
-        nextDayButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(Simulation.getDay()==0 && Application.getAirports().size()>0) {
-                    Simulation.getInstance().runSimulation();
-                    refreshView();
-                }
-                else
-                {
-                    Simulation.dailyUpdate();
-                    refreshView();
-                }
-
-            }
-
-        });*/
-
-        ActionNextDay actionNextDay = new ActionNextDay(Application.getActiveLanguagePack().getNextDayButton());
+        ActionNextDay actionNextDay = new ActionNextDay(Application.getActiveLanguagePack().getNextDayButton(),this);
         JButton nextDayButton = new JButton(actionNextDay);
 
         c3.anchor = GridBagConstraints.NORTHEAST;
@@ -518,8 +461,17 @@ public class Tab extends JPanel {
         assignmentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                FlightOrder orderToAssign = Simulation.getTakenFlightOrders().get(Integer.parseInt(idOrderField.getText()) - 1);
-                Plane planeToAssign = Simulation.getBoughtPlanes().get(Integer.parseInt(idPlaneField.getText()) - 1);
+                FlightOrder orderToAssign = Simulation.getInstance().getTakenFlightOrders().get(Integer.parseInt(idOrderField.getText()) - 1);
+                Plane planeToAssign = Simulation.getInstance().getBoughtPlanes().get(Integer.parseInt(idPlaneField.getText()) - 1);
+                if(planeToAssign.getCapacity()<orderToAssign.getAmountOfPassengers())
+                {
+                    JOptionPane.showMessageDialog(frame,"Selected plane has not enough seats");
+                }
+                else if(planeToAssign.getRange()<orderToAssign.getDistance())
+                {
+                    JOptionPane.showMessageDialog(frame,"Selected plane has not sufficient range");
+                }
+                else
                 if(planeToAssign.getAvailable()
                     && planeToAssign.getCapacity()>=orderToAssign.getAmountOfPassengers()
                     && planeToAssign.getRange()>=orderToAssign.getDistance())
@@ -549,7 +501,7 @@ public class Tab extends JPanel {
         panel.add(assignmentButton,c3);
     }
 
-    public static void refreshView()
+    public void refreshView()
     {
         pane1.removeAll();
         pane2.removeAll();
@@ -557,16 +509,20 @@ public class Tab extends JPanel {
         arrangepanel1(pane1);
         arrangepanel2(pane2);
         arrangepanel3(pane3);
+        if(Simulation.getInstance().getBalance()<0)
+        {
+            JOptionPane.showMessageDialog(frame,"You are bankrupt");
+        }
 
     }
 
-    public static void refreshViewAfterChangeLanguage()
+    public void refreshViewAfterChangeLanguage()
     {
         pane1.removeAll();
         pane2.removeAll();
         pane3.removeAll();
 
-        createTabs(framee);
+        createTabs(frame);
 
     }
 

@@ -3,8 +3,6 @@ package Language;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import lombok.Data;
 
-import java.util.Vector;
-
 @Data
 public class Language {
 
