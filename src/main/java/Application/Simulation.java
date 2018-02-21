@@ -22,7 +22,7 @@ public class Simulation {
 
     protected Simulation()
     {
-        balance = 10000000;
+        balance = Integer.parseInt(Application.getProperties().getProperty("startmoney")) ;
         day = 0;
     }
     public static Simulation getInstance()

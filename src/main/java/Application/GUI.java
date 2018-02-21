@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 public class GUI {
 
     private JFrame frame;
+    private int currentSkin;
 
     public void initUI() {
 
@@ -20,6 +21,7 @@ public class GUI {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         createMenuBar();
+        currentSkin = 1;
         Tab tab = new Tab(frame);
     }
 
@@ -29,6 +31,7 @@ public class GUI {
 
         JMenu file = new JMenu(Application.getActiveLanguagePack().getMenuFile());
         JMenu lang = new JMenu(Application.getActiveLanguagePack().getMenuLang());
+        JMenu plaf = new JMenu(Application.getActiveLanguagePack().getMenuSkin());
         JMenu help = new JMenu(Application.getActiveLanguagePack().getMenuHelp());
         JMenu nextDay = new JMenu(Application.getActiveLanguagePack().getNextDayButton());
         file.setMnemonic(KeyEvent.VK_F);
@@ -38,6 +41,9 @@ public class GUI {
         JMenuItem newgameMenuItem = new JMenuItem(Application.getActiveLanguagePack().getMenuItemNewGame());
         JMenuItem langPlMenuItem = new JMenuItem(Application.getActiveLanguagePack().getLangPL());
         JMenuItem langEnMenuItem = new JMenuItem(Application.getActiveLanguagePack().getLangEN());
+        JMenuItem skin1MenuItem = new JMenuItem(Application.getActiveLanguagePack().getSkin1());
+        JMenuItem skin2MenuItem = new JMenuItem(Application.getActiveLanguagePack().getSkin2());
+        JMenuItem skin3MenuItem = new JMenuItem(Application.getActiveLanguagePack().getSkin3());
         eMenuItem.setMnemonic(KeyEvent.VK_E);
         eMenuItem.setToolTipText(Application.getActiveLanguagePack().getMenuItemExit());
         eMenuItem.addActionListener((ActionEvent eventExit) -> {
@@ -46,6 +52,9 @@ public class GUI {
         newgameMenuItem.addActionListener((ActionEvent eventNew)-> {frame.dispose(); Application.main(null);});
         langEnMenuItem.addActionListener((ActionEvent eventLangEn)->{changeLanguage("En");});
         langPlMenuItem.addActionListener((ActionEvent eventLangPl)->{changeLanguage("Pl");});
+        skin1MenuItem.addActionListener((ActionEvent eventSkin)->{if(currentSkin!=1)changeSkin(1);});
+        skin2MenuItem.addActionListener((ActionEvent eventSkin)->{if(currentSkin!=2)changeSkin(2);});
+        skin3MenuItem.addActionListener((ActionEvent eventSkin)->{if(currentSkin!=3)changeSkin(3);});
 
         file.add(newgameMenuItem);
     //    file.add(savegameMenuItem);
@@ -53,8 +62,12 @@ public class GUI {
         lang.add(langEnMenuItem);
         lang.add(langPlMenuItem);
         nextDay.add(new ActionNextDay(Application.getActiveLanguagePack().getNextDayButton()));
+        plaf.add(skin1MenuItem);
+        plaf.add(skin2MenuItem);
+        plaf.add(skin3MenuItem);
 
         menubar.add(file);
+        menubar.add(plaf);
         menubar.add(lang);
         menubar.add(help);
         menubar.add(nextDay);
@@ -68,6 +81,45 @@ public class GUI {
             Application.changeActiveLanguagePack();
             createMenuBar();
             Tab.refreshViewAfterChangeLanguage();
+        }
+    }
+
+    private void changeSkin(int skin)
+    {
+        if(skin == 1)
+        {
+            try {
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+                SwingUtilities.updateComponentTreeUI(frame);
+                currentSkin = 1;
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(skin == 2)
+        {
+            try {
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+                SwingUtilities.updateComponentTreeUI(frame);
+                currentSkin = 2;
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(skin == 3)
+        {
+            try {
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+                SwingUtilities.updateComponentTreeUI(frame);
+                currentSkin = 3;
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

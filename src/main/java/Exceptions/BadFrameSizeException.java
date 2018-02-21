@@ -2,7 +2,7 @@ package Exceptions;
 
 // Jesli zamoloty beda mialy takie same numery, no to wtedy nie da sie przyporządkować
 
-public class OrderAssignmentException extends Exception {
+public class BadFrameSizeException extends Exception {
 
     private String message;
 
@@ -11,7 +11,7 @@ public class OrderAssignmentException extends Exception {
         return message;
     }
 
-    public OrderAssignmentException(String message)
+    public BadFrameSizeException(String message)
     {
         this.message = message;
     }

@@ -1,9 +1,6 @@
 package Application;
 
-import Exceptions.InvalidDatabaseDataValueException;
-import Exceptions.LanguageException;
-import Exceptions.ReadPropertiesException;
-import Exceptions.XMLReadException;
+import Exceptions.*;
 import Language.Language;
 import Model.Airport;
 import Model.FlightOrder;
@@ -49,11 +46,15 @@ public class Application {
 
         try {
             readProperties();
+            if(Integer.parseInt((properties.getProperty("frameheight"))) > (Integer.parseInt(properties.getProperty("framewidth"))))
+            {
+                throw new BadFrameSizeException("Invalid framesize, check properties for details");
+            }
             logger.info("Properties file loaded succesfully ");
         }
-        catch(ReadPropertiesException rpe)
+        catch(ReadPropertiesException | BadFrameSizeException rpe)
         {
-            rpe.getMessage();
+            System.out.println(rpe.getMessage());
             logger.error("Error while reading properties file");
         }
 

@@ -4,3 +4,4 @@ user = root
 password = admin
 framewidth = 1280
 frameheight = 720
+startmoney = 10000000
