@@ -3,9 +3,12 @@ package Application;
 import API.Weather;
 import Model.FlightOrder;
 import Model.Plane;
+import org.omg.CORBA.INTERNAL;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Tab extends JPanel {
 
@@ -22,6 +26,8 @@ public class Tab extends JPanel {
     private JPanel pane2 = new JPanel();
     private JPanel pane3 = new JPanel();
     private JFrame frame;
+    private ArrayList<FlightOrder> changedOrders = new ArrayList<FlightOrder>();
+    private DefaultTableModel newModel;
 
     public Tab(JFrame frame)
     {
@@ -375,13 +381,23 @@ public class Tab extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(table2.getSelectedRow()!=-1) {
+                if(table2.getSelectedRow()!=-1 && changedOrders.size()>0) {
+                    FlightOrder takenOrder = changedOrders.get(table2.getSelectedRow());
+                    Simulation.getInstance().getTakenFlightOrders().add(takenOrder);
+                    changedOrders.remove(takenOrder);
+                    Simulation.getInstance().getAvailableFlightOrders().remove(takenOrder);
+
+                    refreshView();
+                }
+                else
+                    if(table2.getSelectedRow()!=-1) {
                     FlightOrder takenOrder = Simulation.getInstance().getAvailableFlightOrders().get(table2.getSelectedRow());
                     Simulation.getInstance().getTakenFlightOrders().add(takenOrder);
                     Simulation.getInstance().getAvailableFlightOrders().remove(takenOrder);
 
                     refreshView();
                 }
+
                 else JOptionPane.showMessageDialog(frame,"Select one order");
             }
         });
@@ -462,6 +478,9 @@ public class Tab extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 FlightOrder orderToAssign = Simulation.getInstance().getTakenFlightOrders().get(Integer.parseInt(idOrderField.getText()) - 1);
+                // if(changedOrders.size()>0) orderToAssign = changedOrders.get(Integer.parseInt(idOrderField.getText())-1);
+              //   else orderToAssign = Simulation.getInstance().getTakenFlightOrders().get(Integer.parseInt(idOrderField.getText()) - 1);
+
                 Plane planeToAssign = Simulation.getInstance().getBoughtPlanes().get(Integer.parseInt(idPlaneField.getText()) - 1);
                 if(planeToAssign.getCapacity()<orderToAssign.getAmountOfPassengers())
                 {
@@ -499,6 +518,110 @@ public class Tab extends JPanel {
         c3.gridheight = 1;
         c3.insets = new Insets(20,260,260,50);
         panel.add(assignmentButton,c3);
+
+
+        JTextField filterOrderField = new JTextField(3);
+        filterOrderField.setBackground(Color.WHITE);
+        filterOrderField.setText("");
+        c3.anchor = GridBagConstraints.EAST;
+        c3.fill = GridBagConstraints.HORIZONTAL;
+        c3.gridy = 3;
+        c3.gridx = 0;
+        c3.gridwidth = 1;
+        c3.gridheight = 1;
+        c3.insets = new Insets(0,50,0,200);
+        panel.add(filterOrderField,c3);
+
+        filterOrderField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+
+                changedOrders.clear();
+                c3.anchor = GridBagConstraints.NORTHWEST;
+                c3.weighty = 6;
+                c3.weightx = 2;
+                c3.gridy = 1;
+                c3.gridx = 0;
+                c3.insets = new Insets(70,20,20,0);
+                c3.fill = GridBagConstraints.BOTH;
+
+                String text = filterOrderField.getText();
+                if(text.isEmpty()) {changedOrders = new ArrayList<FlightOrder>(Simulation.getInstance().getAvailableFlightOrders()); newModel = new DefaultTableModel(Application.getVectorsFromOrders(changedOrders),Application.getOrdersHeaders());}
+                else
+                {
+                    for(FlightOrder fo : Simulation.getInstance().getAvailableFlightOrders())
+                    {
+                        if(fo.getFrom().getCity().startsWith(text))
+                        {
+                            changedOrders.add(fo);
+                        }
+                    }
+                    newModel = new DefaultTableModel(Application.getVectorsFromOrders(changedOrders),Application.getOrdersHeaders());
+                }
+                pane1.remove(table2);
+                table2.setModel(newModel);
+                panel.add(table2,c3);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                changedOrders.clear();
+                c3.anchor = GridBagConstraints.NORTHWEST;
+                c3.weighty = 6;
+                c3.weightx = 2;
+                c3.gridy = 1;
+                c3.gridx = 0;
+                c3.insets = new Insets(70,20,20,0);
+                c3.fill = GridBagConstraints.BOTH;
+                String text = filterOrderField.getText();
+                if(text.isEmpty()) {changedOrders = new ArrayList<FlightOrder>(Simulation.getInstance().getAvailableFlightOrders()); newModel = new DefaultTableModel(Application.getVectorsFromOrders(changedOrders),Application.getOrdersHeaders());}
+                else
+                {
+                    for(FlightOrder fo : Simulation.getInstance().getAvailableFlightOrders())
+                    {
+                        if(fo.getFrom().getCity().startsWith(text))
+                        {
+                            changedOrders.add(fo);
+                        }
+                    }
+                    newModel = new DefaultTableModel(Application.getVectorsFromOrders(changedOrders),Application.getOrdersHeaders());
+                }
+                pane1.remove(table2);
+                table2.setModel(newModel);
+                panel.add(table2,c3);
+
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                changedOrders.clear();
+                c3.anchor = GridBagConstraints.NORTHWEST;
+                c3.weighty = 6;
+                c3.weightx = 2;
+                c3.gridy = 1;
+                c3.gridx = 0;
+                c3.insets = new Insets(70,20,20,0);
+                c3.fill = GridBagConstraints.BOTH;
+                String text = filterOrderField.getText();
+                if(text.isEmpty()) {changedOrders = new ArrayList<FlightOrder>(Simulation.getInstance().getAvailableFlightOrders()); newModel = new DefaultTableModel(Application.getVectorsFromOrders(changedOrders),Application.getOrdersHeaders());}
+                else
+                {
+                    for(FlightOrder fo : Simulation.getInstance().getAvailableFlightOrders())
+                    {
+                        if(fo.getFrom().getCity().startsWith(text))
+                        {
+                            changedOrders.add(fo);
+                        }
+                    }
+                    newModel = new DefaultTableModel(Application.getVectorsFromOrders(changedOrders),Application.getOrdersHeaders());
+                }
+                pane1.remove(table2);
+                table2.setModel(newModel);
+                pane1.add(table2,c3);
+
+            }
+        });
+
     }
 
     public void refreshView()

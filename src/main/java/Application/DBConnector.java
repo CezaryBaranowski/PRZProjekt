@@ -22,11 +22,6 @@ public class DBConnector {
         {
             connection = getConnection();
 
-           /* List<Airport> ap = getAirportData();
-            for(Airport a: ap)
-            {
-                System.out.println(a.toString());
-            }*/
         }
         catch (IOException | SQLException e)
         {
