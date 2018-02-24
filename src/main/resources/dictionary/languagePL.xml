@@ -1,0 +1,54 @@
+<LanguagePack>
+    <langCode>Pl</langCode>
+    <menuFile>Plik</menuFile>
+    <menuHelp>Pomoc</menuHelp>
+    <menuLang>Jezyk</menuLang>
+    <menuItemNewGame>Nowa Gra</menuItemNewGame>
+    <menuItemExit>Koniec</menuItemExit>
+    <langEN>Angielski</langEN>
+    <langPL>Polski</langPL>
+    <menuSkin>Skorki</menuSkin>
+    <skin1>Skorka 1</skin1>
+    <skin2>Skorka 2</skin2>
+    <skin3>Skorka 3</skin3>
+    <nextDayButton>KOLEJNY DZIEN</nextDayButton>
+    <overviewTab>PRZEGLAD</overviewTab>
+    <planesTab>SAMOLOTY</planesTab>
+    <ordersTab>ZLECENIA</ordersTab>
+    <balanceLabel>BILANS</balanceLabel>
+    <dayLabel>DZIEN</dayLabel>
+    <overviewLabel>PRZEGLAD</overviewLabel>
+    <yourPlanesTab1>TWOJE SAMOLOTY</yourPlanesTab1>
+    <acceptedOrdersTab1>ZAAKCEPTOWANE ZLECENIA</acceptedOrdersTab1>
+    <planesLabel>SAMOLOTY</planesLabel>
+    <yourPlanesTab2>TWOJE SAMOLOTY</yourPlanesTab2>
+    <availablePlanesTab2>DOSTEPNE SAMOLOTY</availablePlanesTab2>
+    <buyButton>KUP</buyButton>
+    <ordersLabel>ZLECENIA</ordersLabel>
+    <yourOrdersTab3>TWOJE ZLECENIA</yourOrdersTab3>
+    <availableOrdersTab3>DOSTEPNE ZLECENIA</availableOrdersTab3>
+    <takeButton>WEZ </takeButton>
+    <assignButton>PRZYPISZ </assignButton>
+    <numberOfPlaneLabel>Tu wpisz nr samolotu</numberOfPlaneLabel>
+    <numberOfOrderLabel>Tu wpisz nr zlecenia</numberOfOrderLabel>
+    <numberOfPlane>numer</numberOfPlane>
+    <brand>marka</brand>
+    <model>model</model>
+    <range>zasieg</range>
+    <location>polozenie</location>
+    <capacity>pojemnosc</capacity>
+    <prodyear>rokprod</prodyear>
+    <costfactor>wspkoszt</costfactor>
+    <price>cena</price>
+    <available>dostepnosc</available>
+    <availableYes>Tak</availableYes>
+    <availableNo>Nie</availableNo>
+    <numberOfOrder>numer</numberOfOrder>
+    <from>z</from>
+    <destination>do</destination>
+    <passengers>pasazerowie</passengers>
+    <distance>dystans</distance>
+    <prize>premia</prize>
+    <penalty>kara</penalty>
+    <daysToExpire>dni do konca</daysToExpire>
+</LanguagePack>

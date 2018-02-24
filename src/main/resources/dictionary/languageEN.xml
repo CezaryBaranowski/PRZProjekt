@@ -1,0 +1,54 @@
+<LanguagePack>
+    <langCode>En</langCode>
+    <menuFile>File</menuFile>
+    <menuHelp>Help</menuHelp>
+    <menuLang>Language</menuLang>
+    <menuItemNewGame>New Game</menuItemNewGame>
+    <menuItemExit>Exit</menuItemExit>
+    <langEN>English</langEN>
+    <langPL>Polish</langPL>
+    <menuSkin>Skins</menuSkin>
+    <skin1>Skin 1</skin1>
+    <skin2>Skin 2</skin2>
+    <skin3>Skin 3</skin3>
+    <nextDayButton>NEXT DAY</nextDayButton>
+    <overviewTab>OVERVIEW</overviewTab>
+    <planesTab>PLANES</planesTab>
+    <ordersTab>ORDERS</ordersTab>
+    <balanceLabel>BALANCE</balanceLabel>
+    <dayLabel>DAY</dayLabel>
+    <overviewLabel>OVERVIEW</overviewLabel>
+    <yourPlanesTab1>YOUR PLANES</yourPlanesTab1>
+    <acceptedOrdersTab1>ACCEPTED ORDERS</acceptedOrdersTab1>
+    <planesLabel>PLANES</planesLabel>
+    <yourPlanesTab2>YOUR PLANES</yourPlanesTab2>
+    <availablePlanesTab2>AVAILABLE PLANES</availablePlanesTab2>
+    <buyButton>BUY</buyButton>
+    <ordersLabel>ORDERS</ordersLabel>
+    <yourOrdersTab3>YOUR ORDERS</yourOrdersTab3>
+    <availableOrdersTab3>AVAILABLE ORDERS</availableOrdersTab3>
+    <takeButton>TAKE </takeButton>
+    <assignButton>Assign </assignButton>
+    <numberOfPlaneLabel>Enter nr of plane here</numberOfPlaneLabel>
+    <numberOfOrderLabel>Enter nr of order here</numberOfOrderLabel>
+    <numberOfPlane>number</numberOfPlane>
+    <brand>brand</brand>
+    <model>model</model>
+    <range>range</range>
+    <location>location</location>
+    <capacity>capacity</capacity>
+    <prodyear>prodyear</prodyear>
+    <costfactor>costfactor</costfactor>
+    <price>price</price>
+    <available>available</available>
+    <availableYes>Yes</availableYes>
+    <availableNo>No</availableNo>
+    <numberOfOrder>number</numberOfOrder>
+    <from>from</from>
+    <destination>destination</destination>
+    <passengers>passengers</passengers>
+    <distance>distance</distance>
+    <prize>prize</prize>
+    <penalty>penalty</penalty>
+    <daysToExpire>daysToExpire</daysToExpire>
+</LanguagePack>
